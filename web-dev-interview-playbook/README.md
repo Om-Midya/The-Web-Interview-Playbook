@@ -40,7 +40,7 @@ This playbook is different. Every section teaches you **how to think in an inter
 
 ## Who Is This For?
 
-- B.Tech / B.E. students in 2nd or 3rd year
+- students in 2nd or 3rd year
 - Self-taught developers preparing for first internships
 - Anyone switching to web dev from another branch
 - Students who have a project but struggle to explain it in interviews
@@ -49,7 +49,7 @@ This playbook is different. Every section teaches you **how to think in an inter
 
 - Not a DSA sheet (use LeetCode/Codeforces for that)
 - Not a full tutorial course (use freeCodeCamp, MDN for deep learning)
-- Not company-specific (patterns apply across TCS, Infosys, startups, product companies)
+- Not company-specific 
 
 ## Quick Start (If Interview Is in 7 Days)
 
