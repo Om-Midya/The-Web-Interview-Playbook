@@ -43,7 +43,7 @@
     padding: 1rem;
     margin: 10vh auto auto;
     overflow: auto;
-    box-shadow: 0 20px 60px -20px rgb(0 0 0 / 0.35);
+    box-shadow: 0 20px 60px -20px color-mix(in srgb, var(--text) 35%, transparent);
 
     /* Bind the Pagefind default UI to this site's design tokens so results
        feel native rather than like an embedded third-party widget. */
@@ -83,19 +83,24 @@
 
   async function openSearch() {
     dialog.showModal();
-    if (loaded) return;
+    if (loaded) {
+      dialog.querySelector('input')?.focus();
+      return;
+    }
     loaded = true;
+    const container = document.getElementById('pagefind-container')!;
+    const fallback = container.innerHTML;
     try {
       // Pagefind assets exist only in built output; fail-soft in dev.
       // @ts-ignore
       await import(/* @vite-ignore */ '/pagefind/pagefind-ui.js');
-      const container = document.getElementById('pagefind-container')!;
       container.innerHTML = '';
       // @ts-ignore
       new PagefindUI({ element: '#pagefind-container', showSubResults: true, autofocus: true });
     } catch {
-      /* dev mode: keep the hint text */
+      /* dev mode: restore fallback hint text */
       loaded = false;
+      container.innerHTML = fallback;
     }
   }
 
