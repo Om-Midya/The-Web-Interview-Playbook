@@ -7,4 +7,13 @@ export interface WidgetMeta {
   description: string;
 }
 
-export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {};
+export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
+  '02-javascript-core': [
+    {
+      id: 'event-loop-stepper',
+      title: 'Event Loop Stepper',
+      description:
+        'Step through real code and watch the call stack, Web APIs, and both queues — see WHY promises beat setTimeout.',
+    },
+  ],
+};

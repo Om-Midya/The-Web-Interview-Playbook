@@ -2,7 +2,9 @@ import { Suspense, lazy, type ComponentType, type LazyExoticComponent } from 're
 
 /** Client-side widget registry. Literal dynamic imports let Vite code-split
  * one chunk per widget; only widgets on the current page are ever fetched. */
-const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {};
+const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
+  'event-loop-stepper': lazy(() => import('./event-loop/EventLoopStepper')),
+};
 
 export default function WidgetHost({ widgetId }: { widgetId: string }) {
   const Widget = REGISTRY[widgetId];
