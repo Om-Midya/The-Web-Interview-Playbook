@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import FreshnessBadge from '../components/FreshnessBadge.astro';
 import StatusBanner from '../components/StatusBanner.astro';
 import TocNav from '../components/TocNav.astro';
+import Sidebar from '../components/Sidebar.astro';
 import { sectionOf, sectionTitle, extractTitle, sortDocs, isSectionReadme } from '../lib/content';
 import { getLastCommitISO } from '../lib/freshness';
 import '../styles/prose.css';
@@ -32,8 +33,10 @@ const titleFor = (id: string) => {
 };
 
 const { Content, headings } = await render(doc);
+const navDocs = all.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d.id) }));
 ---
 <BaseLayout title={title}>
+  <Sidebar slot="sidebar" docs={navDocs} currentId={doc.id} currentSection={section ?? undefined} />
   <div class="doc-shell">
     <article class="prose">
       {section && (

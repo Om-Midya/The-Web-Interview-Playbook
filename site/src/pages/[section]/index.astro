@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FreshnessBadge from '../../components/FreshnessBadge.astro';
 import StatusBanner from '../../components/StatusBanner.astro';
+import Sidebar from '../../components/Sidebar.astro';
 import { sectionOf, sectionTitle, extractTitle, sortDocs, isSectionReadme, allSectionDirs } from '../../lib/content';
 import { getLastCommitISO } from '../../lib/freshness';
 import '../../styles/prose.css';
@@ -22,8 +23,10 @@ const children = sortDocs(
 );
 const entryFor = (id: string) => docs.find((d) => d.id === id)!;
 const rendered = readme ? await render(readme) : null;
+const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d.id) }));
 ---
 <BaseLayout title={sectionTitle(section)}>
+  <Sidebar slot="sidebar" docs={navDocs} currentSection={section} />
   <div class="section-page">
     <article class="prose">
       {readme?.data.status === 'updating' && <StatusBanner />}
