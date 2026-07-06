@@ -74,7 +74,7 @@
   margin-top: 0.9rem;
   flex-wrap: wrap;
 }
-.stepper-controls button {
+.stepper-controls button, .pm-actions button {
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -83,9 +83,9 @@
   padding: 0.35rem 0.8rem;
   cursor: pointer;
 }
-.stepper-controls button:hover:not(:disabled) { border-color: var(--accent); }
-.stepper-controls button:disabled { opacity: 0.45; cursor: default; }
-.stepper-controls button.is-primary {
+.stepper-controls button:hover:not(:disabled), .pm-actions button:hover:not(:disabled) { border-color: var(--accent); }
+.stepper-controls button:disabled, .pm-actions button:disabled { opacity: 0.45; cursor: default; }
+.stepper-controls button.is-primary, .pm-actions button.is-primary {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-contrast);

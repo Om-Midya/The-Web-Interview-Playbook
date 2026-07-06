@@ -22,5 +22,10 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       description:
         'Step through real code and watch the call stack, Web APIs, and both queues — see WHY promises beat setTimeout.',
     },
+    {
+      id: 'promise-state-machine',
+      title: 'Promise State Machine',
+      description: 'resolve, reject, and try to change a settled promise — see which handlers fire and why settled means locked.',
+    },
   ],
 };
