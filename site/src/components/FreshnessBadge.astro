@@ -1,0 +1,42 @@
+---
+import { isRecent, formatDate } from '../lib/freshness';
+interface Props { iso: string | null }
+const { iso } = Astro.props;
+const recent = isRecent(iso);
+---
+{recent && iso && (
+  <span class="fresh-badge" tabindex="0">
+    ⚡ Recently updated
+    <span class="tooltip" role="tooltip">
+      Updated on {formatDate(iso)} — this content may still be evolving.
+    </span>
+  </span>
+)}
+
+<style>
+  .fresh-badge {
+    position: relative; display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.78rem; font-weight: 600; color: var(--fresh); line-height: 1;
+    background: var(--fresh-bg); border-radius: 999px; padding: 0.28rem 0.65rem;
+    cursor: default; transition: box-shadow 0.15s ease;
+  }
+  .fresh-badge:hover,
+  .fresh-badge:focus-visible {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--fresh) 45%, transparent);
+  }
+  .tooltip {
+    position: absolute; top: calc(100% + 6px); left: 0; z-index: 20;
+    width: max-content; max-width: 260px; font-weight: 400; line-height: 1.45;
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 0.5rem 0.7rem; font-size: 0.78rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+    opacity: 0; transform: translateY(-2px); pointer-events: none;
+    transition: opacity 120ms ease, transform 120ms ease;
+  }
+  .fresh-badge:hover .tooltip,
+  .fresh-badge:focus .tooltip,
+  .fresh-badge:focus-visible .tooltip {
+    opacity: 1; transform: translateY(0);
+  }
+</style>
