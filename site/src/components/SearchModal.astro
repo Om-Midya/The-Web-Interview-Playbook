@@ -94,6 +94,12 @@
       // Pagefind assets exist only in built output; fail-soft in dev.
       // @ts-ignore
       await import(/* @vite-ignore */ '/pagefind/pagefind-ui.js');
+      if (!document.querySelector('link[href="/pagefind/pagefind-ui.css"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/pagefind/pagefind-ui.css';
+        document.head.appendChild(link);
+      }
       container.innerHTML = '';
       // @ts-ignore
       new PagefindUI({ element: '#pagefind-container', showSubResults: true, autofocus: true });
@@ -116,5 +122,3 @@
     if (e.target === dialog) dialog.close();
   });
 </script>
-
-<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
