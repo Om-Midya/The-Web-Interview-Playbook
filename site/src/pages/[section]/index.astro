@@ -1,0 +1,59 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FreshnessBadge from '../../components/FreshnessBadge.astro';
+import StatusBanner from '../../components/StatusBanner.astro';
+import { sectionOf, sectionTitle, extractTitle, sortDocs, isSectionReadme, allSectionDirs } from '../../lib/content';
+import { getLastCommitISO } from '../../lib/freshness';
+import '../../styles/prose.css';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+  return allSectionDirs(docs.map((d) => d.id)).map((section) => ({
+    params: { section },
+    props: { section, docs },
+  }));
+}
+
+const { section, docs } = Astro.props;
+const readme = docs.find((d) => d.id === `${section}/readme`);
+const children = sortDocs(
+  docs.filter((d) => sectionOf(d.id) === section && !isSectionReadme(d.id)).map((d) => d.id)
+);
+const entryFor = (id: string) => docs.find((d) => d.id === id)!;
+const rendered = readme ? await render(readme) : null;
+---
+<BaseLayout title={sectionTitle(section)}>
+  <div class="section-page">
+    <article class="prose">
+      {readme?.data.status === 'updating' && <StatusBanner />}
+      {rendered ? <rendered.Content /> : <h1>{sectionTitle(section)}</h1>}
+    </article>
+    <h2 class="docs-heading">Study materials</h2>
+    <ul class="doc-list">
+      {children.map((id) => {
+        const e = entryFor(id);
+        const iso = e.filePath ? getLastCommitISO(e.filePath) : null;
+        return (
+          <li>
+            <a href={`/${id}/`}>{extractTitle(e.body ?? '', e.id)}</a>
+            <FreshnessBadge iso={iso} />
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</BaseLayout>
+
+<style>
+  .section-page { max-width: var(--content-width); margin: 0 auto; }
+  .docs-heading { margin-top: 2.5rem; font-size: 1.2rem; }
+  .doc-list { list-style: none; padding: 0; display: grid; gap: 0.5rem; }
+  .doc-list li {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 0.7rem 1rem; background: var(--surface);
+    transition: border-color 120ms ease;
+  }
+  .doc-list li:hover { border-color: var(--accent); }
+</style>

@@ -1,0 +1,26 @@
+---
+interface Props { dir: string; title: string; docCount: number; fresh: boolean }
+const { dir, title, docCount, fresh } = Astro.props;
+const num = dir.slice(0, 2);
+---
+<a class="card" href={`/${dir}/`}>
+  <span class="num">{num}</span>
+  <span class="card-title">{title}</span>
+  <span class="meta">
+    {docCount} docs
+    {fresh && <span class="fresh-dot" title="Recently updated">⚡</span>}
+  </span>
+</a>
+
+<style>
+  .card {
+    display: flex; flex-direction: column; gap: 0.35rem;
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 1.1rem 1.2rem; background: var(--surface); color: var(--text);
+    transition: border-color 120ms ease, transform 120ms ease;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
+  .num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); }
+  .card-title { font-weight: 650; letter-spacing: -0.01em; }
+  .meta { font-size: 0.8rem; color: var(--text-muted); display: flex; gap: 0.4rem; align-items: center; }
+</style>
