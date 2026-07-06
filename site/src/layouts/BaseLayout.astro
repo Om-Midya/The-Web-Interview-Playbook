@@ -8,7 +8,6 @@ interface Props {
 }
 
 const { title, description = 'Interactive web dev interview preparation' } = Astro.props;
-const hasSidebar = Astro.slots.has('sidebar');
 ---
 <!doctype html>
 <html lang="en">
@@ -33,11 +32,7 @@ const hasSidebar = Astro.slots.has('sidebar');
       </div>
     </header>
     <div class="shell">
-      {hasSidebar && (
-        <aside class="sidebar">
-          <slot name="sidebar" />
-        </aside>
-      )}
+      <slot name="sidebar" />
       <main id="main-content"><slot /></main>
     </div>
     <style>
@@ -83,25 +78,10 @@ const hasSidebar = Astro.slots.has('sidebar');
         display: flex;
         min-height: calc(100vh - 3.2rem);
       }
-      .sidebar {
-        flex-shrink: 0;
-        width: 17rem;
-        border-right: 1px solid var(--border);
-        padding: 2rem 1.25rem;
-      }
       main {
         flex: 1;
         min-width: 0;
         padding: 2rem 1.5rem 4rem;
-      }
-      @media (max-width: 768px) {
-        .shell { flex-direction: column; }
-        .sidebar {
-          width: auto;
-          border-right: none;
-          border-bottom: 1px solid var(--border);
-          padding: 1.25rem;
-        }
       }
     </style>
   </body>
