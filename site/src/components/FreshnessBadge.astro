@@ -3,11 +3,12 @@ import { isRecent, formatDate } from '../lib/freshness';
 interface Props { iso: string | null }
 const { iso } = Astro.props;
 const recent = isRecent(iso);
+const tooltipId = `fresh-tip-${Math.random().toString(36).slice(2, 8)}`;
 ---
 {recent && iso && (
-  <span class="fresh-badge" tabindex="0">
+  <span class="fresh-badge" tabindex="0" aria-describedby={tooltipId}>
     ⚡ Recently updated
-    <span class="tooltip" role="tooltip">
+    <span class="tooltip" role="tooltip" id={tooltipId}>
       Updated on {formatDate(iso)} — this content may still be evolving.
     </span>
   </span>
@@ -30,7 +31,7 @@ const recent = isRecent(iso);
     background: var(--surface); color: var(--text);
     border: 1px solid var(--border); border-radius: var(--radius);
     padding: 0.5rem 0.7rem; font-size: 0.78rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--text) 20%, transparent);
     opacity: 0; transform: translateY(-2px); pointer-events: none;
     transition: opacity 120ms ease, transform 120ms ease;
   }
