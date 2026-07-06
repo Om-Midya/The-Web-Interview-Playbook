@@ -9,6 +9,7 @@ export default function PromiseStateMachine() {
 
   function act(action: PromiseAction) {
     const next = transition(state, action);
+    // transition() returns `current` unchanged for any resolve/reject on a settled promise, so next === state reliably means "attempted mutation was ignored".
     setAttemptedAfterSettle(action !== 'reset' && next === state && state !== 'pending');
     setState(next);
   }

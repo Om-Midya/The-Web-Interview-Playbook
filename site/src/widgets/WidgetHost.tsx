@@ -8,6 +8,8 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'promise-state-machine': lazy(() => import('./promise/PromiseStateMachine')),
 };
 
+export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);
+
 export default function WidgetHost({ widgetId }: { widgetId: string }) {
   const Widget = REGISTRY[widgetId];
   if (!Widget) return null; // fail-soft: unknown id renders nothing

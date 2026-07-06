@@ -7,14 +7,14 @@ const ALIGN = ['stretch', 'flex-start', 'center', 'flex-end', 'baseline'] as con
 const WRAP = ['nowrap', 'wrap'] as const;
 
 /** Varied heights make align-items differences visible. */
-const ITEM_HEIGHTS = [48, 72, 56, 88, 64, 52];
+const ITEM_HEIGHTS = [48, 72, 56, 88, 64, 52, 76, 60, 84, 68, 54, 80];
 
 export default function FlexboxPlayground() {
   const [direction, setDirection] = useState<string>('row');
   const [justify, setJustify] = useState<string>('flex-start');
   const [align, setAlign] = useState<string>('stretch');
   const [wrap, setWrap] = useState<string>('nowrap');
-  const [count, setCount] = useState(4);
+  const [count, setCount] = useState(6);
 
   const containerStyle: CSSProperties = {
     display: 'flex',
@@ -47,7 +47,7 @@ export default function FlexboxPlayground() {
           <OptionRow label="flex-wrap" options={WRAP} value={wrap} onChange={setWrap} />
           <OptionRow
             label="items"
-            options={['3', '4', '5', '6'] as const}
+            options={['4', '6', '8', '12'] as const}
             value={String(count)}
             onChange={(v) => setCount(Number(v))}
           />

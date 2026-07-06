@@ -15,9 +15,9 @@ export default function Stepper<S>({ samples, renderState, autoPlayMs = 1400 }: 
   const stateRef = useRef<HTMLDivElement>(null);
 
   const sample = samples[sampleIndex];
-  const total = sample.steps.length;
-  const step = sample.steps[clampStep(stepIndex, total)];
-  const lines = sample.code.split('\n');
+  const total = sample?.steps.length ?? 0;
+  const step = sample?.steps[clampStep(stepIndex, total)];
+  const lines = sample?.code.split('\n') ?? [];
   const atEnd = stepIndex >= total - 1;
 
   function goTo(i: number) {
@@ -45,15 +45,16 @@ export default function Stepper<S>({ samples, renderState, autoPlayMs = 1400 }: 
     }
   }, [stepIndex, sampleIndex]);
 
+  if (!sample || sample.steps.length === 0) return null;
+
   return (
     <div>
       {samples.length > 1 && (
-        <div className="stepper-tabs" role="tablist" aria-label="Code samples">
+        <div className="stepper-tabs" aria-label="Code samples">
           {samples.map((s, i) => (
             <button
               key={s.id}
-              role="tab"
-              aria-selected={i === sampleIndex}
+              aria-pressed={i === sampleIndex}
               className={i === sampleIndex ? 'is-active' : ''}
               onClick={() => selectSample(i)}
             >

@@ -12,7 +12,7 @@
   letter-spacing: -0.01em;
 }
 .widget-frame-title::before {
-  content: '⚡ ';
+  content: '⚡ ' / '';
   color: var(--accent);
 }
 .widget-frame-desc {
@@ -155,7 +155,7 @@
   padding: 0.5rem 0.7rem;
   min-height: 2.4rem;
 }
-.el-console-line::before { content: '› '; color: var(--fresh); }
+.el-console-line::before { content: '› ' / ''; color: var(--fresh); }
 
 /* ---- Playground engine ---- */
 .playground { display: grid; gap: 1rem; }
@@ -191,6 +191,8 @@
   border-radius: var(--radius);
   background: var(--surface-2);
   min-height: 220px;
+  max-width: 34rem;
+  overflow: auto;
   padding: 0.6rem;
 }
 .playground-css {
@@ -212,7 +214,7 @@
   color: var(--text);
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  width: 3.2rem;
+  width: 4rem;
 }
 
 /* ---- Promise state machine ---- */
