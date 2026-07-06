@@ -1,0 +1,41 @@
+<button id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+  <span class="icon-sun" aria-hidden="true">☀️</span>
+  <span class="icon-moon" aria-hidden="true">🌙</span>
+</button>
+
+<style>
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    cursor: pointer;
+    padding: 0.35rem 0.55rem;
+    font-size: 1rem;
+    line-height: 1;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+  button:hover {
+    border-color: var(--accent);
+    background: var(--surface-2);
+  }
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  :global([data-theme='dark']) .icon-moon { display: none; }
+  :global([data-theme='light']) .icon-sun { display: none; }
+</style>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  toggle?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('theme', next);
+  });
+</script>
