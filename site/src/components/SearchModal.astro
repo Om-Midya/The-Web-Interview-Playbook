@@ -1,0 +1,115 @@
+<button id="search-open" aria-label="Search (Cmd+K)" title="Search">
+  <span aria-hidden="true">🔍</span> <kbd>⌘K</kbd>
+</button>
+
+<dialog id="search-dialog" aria-label="Search the playbook">
+  <div id="pagefind-container"><p class="hint">Search is available after the site is built (`npm run build && npm run preview`).</p></div>
+</dialog>
+
+<style>
+  #search-open {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.35rem 0.6rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  #search-open:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  kbd {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0 0.3rem;
+    background: var(--surface);
+  }
+
+  #search-dialog {
+    width: min(640px, 92vw);
+    max-height: min(70vh, 640px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    color: var(--text);
+    padding: 1rem;
+    margin: 10vh auto auto;
+    overflow: auto;
+    box-shadow: 0 20px 60px -20px rgb(0 0 0 / 0.35);
+
+    /* Bind the Pagefind default UI to this site's design tokens so results
+       feel native rather than like an embedded third-party widget. */
+    --pagefind-ui-primary: var(--accent);
+    --pagefind-ui-text: var(--text);
+    --pagefind-ui-background: var(--surface);
+    --pagefind-ui-border: var(--border);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: var(--radius);
+    --pagefind-ui-font: var(--font-sans);
+  }
+  #search-dialog::backdrop {
+    background: rgb(0 0 0 / 0.45);
+  }
+  #search-dialog[open] {
+    animation: search-dialog-in 0.15s ease-out;
+  }
+  @keyframes search-dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .hint {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+</style>
+
+<script>
+  const dialog = document.getElementById('search-dialog') as HTMLDialogElement;
+  let loaded = false;
+
+  async function openSearch() {
+    dialog.showModal();
+    if (loaded) return;
+    loaded = true;
+    try {
+      // Pagefind assets exist only in built output; fail-soft in dev.
+      // @ts-ignore
+      await import(/* @vite-ignore */ '/pagefind/pagefind-ui.js');
+      const container = document.getElementById('pagefind-container')!;
+      container.innerHTML = '';
+      // @ts-ignore
+      new PagefindUI({ element: '#pagefind-container', showSubResults: true, autofocus: true });
+    } catch {
+      /* dev mode: keep the hint text */
+      loaded = false;
+    }
+  }
+
+  document.getElementById('search-open')?.addEventListener('click', openSearch);
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      dialog.open ? dialog.close() : openSearch();
+    }
+    if (e.key === 'Escape' && dialog.open) dialog.close();
+  });
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+</script>
+
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />

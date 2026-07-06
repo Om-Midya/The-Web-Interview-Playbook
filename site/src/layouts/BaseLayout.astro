@@ -1,4 +1,5 @@
 ---
+import SearchModal from '../components/SearchModal.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import '../styles/global.css';
 
@@ -28,6 +29,7 @@ const { title, description = 'Interactive web dev interview preparation' } = Ast
       <a class="brand" href="/">Web Interview <strong>Playbook</strong></a>
       <div class="header-actions">
         <slot name="header-actions" />
+        <SearchModal />
         <ThemeToggle />
       </div>
     </header>
