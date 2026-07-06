@@ -92,8 +92,12 @@
     const fallback = container.innerHTML;
     try {
       // Pagefind assets exist only in built output; fail-soft in dev.
+      // The path must be a variable: Vite's import analysis resolves literal
+      // dynamic imports at transform time (even with @vite-ignore) and 500s
+      // the dev server because the file doesn't exist until `pagefind` runs.
+      const pagefindUiUrl = '/pagefind/pagefind-ui.js';
       // @ts-ignore
-      await import(/* @vite-ignore */ '/pagefind/pagefind-ui.js');
+      await import(/* @vite-ignore */ pagefindUiUrl);
       if (!document.querySelector('link[href="/pagefind/pagefind-ui.css"]')) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
