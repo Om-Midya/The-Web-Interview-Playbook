@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sectionOf, sectionTitle, extractTitle, sortDocs, isSectionReadme } from './content';
+import { sectionOf, sectionTitle, extractTitle, sortDocs, isSectionReadme, allSectionDirs } from './content';
 
 describe('sectionOf', () => {
   it('returns the section dir for nested ids', () => {
@@ -57,5 +57,19 @@ describe('isSectionReadme', () => {
     expect(isSectionReadme('02-javascript-core/readme')).toBe(true);
     expect(isSectionReadme('readme')).toBe(false);
     expect(isSectionReadme('02-javascript-core/polyfills')).toBe(false);
+  });
+});
+
+describe('allSectionDirs', () => {
+  it('collects unique NN- section dirs, sorted, ignoring root-level ids', () => {
+    expect(
+      allSectionDirs([
+        '02-javascript-core/polyfills',
+        '02-javascript-core/readme',
+        '01-html-css/mini-tasks',
+        'roadmap',
+        'readme',
+      ])
+    ).toEqual(['01-html-css', '02-javascript-core']);
   });
 });

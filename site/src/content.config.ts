@@ -6,9 +6,10 @@ const docs = defineCollection({
   loader: glob({ pattern: '**/*.md', base: '../web-dev-interview-playbook' }),
   schema: z
     .object({
-      status: z.literal('updating').optional(),
+      status: z.string().optional(),
     })
-    .passthrough(),
+    .passthrough()
+    .catch({}),
 });
 
 export const collections = { docs };
