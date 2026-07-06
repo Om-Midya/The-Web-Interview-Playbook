@@ -6,7 +6,7 @@ This is a **playbook**, not a novel. You don't read it cover to cover — you us
 
 | Interview Type | Start Here |
 |----------------|------------|
-| Campus placement (service company) | HTML/CSS → JS Core → Project Bible → HR |
+| Campus placement  | HTML/CSS → JS Core → React-> Node/Express-> Project Bible → HR |
 | Startup internship | JS Core → React → Project Bible → System Design basics |
 | Product company (frontend) | React → JS Core → DOM → Performance |
 | Product company (full-stack) | JS → React → Node → Project Bible → System Design |
