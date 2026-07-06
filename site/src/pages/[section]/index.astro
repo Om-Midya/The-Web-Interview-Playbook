@@ -40,7 +40,7 @@ const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d
         return (
           <li>
             <a href={`/${id}/`}>{extractTitle(e.body ?? '', e.id)}</a>
-            <FreshnessBadge iso={iso} />
+            <FreshnessBadge iso={iso} uid={id} />
           </li>
         );
       })}

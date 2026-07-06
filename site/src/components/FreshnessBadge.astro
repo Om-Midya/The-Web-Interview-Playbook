@@ -1,9 +1,9 @@
 ---
 import { isRecent, formatDate } from '../lib/freshness';
-interface Props { iso: string | null }
-const { iso } = Astro.props;
+interface Props { iso: string | null; uid?: string }
+const { iso, uid } = Astro.props;
 const recent = isRecent(iso);
-const tooltipId = `fresh-tip-${Math.random().toString(36).slice(2, 8)}`;
+const tooltipId = 'fresh-tip-' + (uid ?? iso ?? 'x').replace(/[^a-zA-Z0-9-]/g, '-');
 ---
 {recent && iso && (
   <span class="fresh-badge" tabindex="0" aria-describedby={tooltipId}>

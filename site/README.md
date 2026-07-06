@@ -1,43 +1,24 @@
-# Astro Starter Kit: Minimal
+# Playbook Site
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Static [Astro](https://astro.build) site that renders the markdown in
+`../web-dev-interview-playbook/` as an interactive learning site. The
+markdown is the source of truth — this app never modifies it.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Commands
 
-## 🚀 Project Structure
+| Command | Action |
+| --- | --- |
+| `npm install` | Install dependencies |
+| `npm run dev` | Dev server at `localhost:4321` (search is unavailable in dev) |
+| `npm run build` | Build to `dist/` and index search (Astro + Pagefind) |
+| `npm run preview` | Serve `dist/` — includes search (custom static server; `astro preview` can't see post-build Pagefind assets) |
+| `npm run test` | Vitest unit tests |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Deploying
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+Any static host works (`dist/` is the whole site). Two requirements:
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- **Node ≥ 22.12** (Astro 7 engine floor).
+- **Full git history at build time** — freshness badges read `git log` per file.
+  On shallow clones (CI default) badges are skipped rather than shown wrong;
+  use `fetch-depth: 0` (GitHub Actions) or equivalent to enable them.

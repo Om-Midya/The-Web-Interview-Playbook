@@ -47,7 +47,7 @@ const sectionMeta = sections.map((s) => {
         {recentFeed.map(({ d, iso }) => (
           <li>
             <a href={`/${d.id}/`}>{extractTitle(d.body ?? '', d.id)}</a>
-            <time>{formatDate(iso!)}</time>
+            <time datetime={iso!}>{formatDate(iso!)}</time>
           </li>
         ))}
       </ul>

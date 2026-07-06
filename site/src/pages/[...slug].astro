@@ -42,7 +42,7 @@ const navDocs = all.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d.
       {section && (
         <p class="crumbs">
           <a href={`/${section}/`}>{sectionTitle(section)}</a>
-          {' '}<FreshnessBadge iso={iso} />
+          {' '}<FreshnessBadge iso={iso} uid={doc.id} />
         </p>
       )}
       {doc.data.status === 'updating' && <StatusBanner />}

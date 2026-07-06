@@ -18,9 +18,14 @@ const { title, description = 'Interactive web dev interview preparation' } = Ast
     <meta name="description" content={description} />
     <title>{title} · Web Interview Playbook</title>
     <script is:inline>
-      const saved = localStorage.getItem('theme');
-      const system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      document.documentElement.dataset.theme = saved ?? system;
+      (() => {
+        let theme;
+        try { theme = localStorage.getItem('theme'); } catch {}
+        if (theme !== 'dark' && theme !== 'light') {
+          theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
     </script>
   </head>
   <body>
@@ -35,7 +40,7 @@ const { title, description = 'Interactive web dev interview preparation' } = Ast
     </header>
     <div class="shell">
       <slot name="sidebar" />
-      <main id="main-content"><slot /></main>
+      <main id="main-content" data-pagefind-body><slot /></main>
     </div>
     <style>
       .skip-link {

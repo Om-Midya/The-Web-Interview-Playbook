@@ -23,6 +23,12 @@ describe('formatDate', () => {
   });
 });
 
+describe('formatDate with bad input', () => {
+  it('returns empty string for unparseable dates', () => {
+    expect(formatDate('not-a-date')).toBe('');
+  });
+});
+
 describe('getLastCommitISO', () => {
   it('returns an ISO date for a committed file in this repo', () => {
     const iso = getLastCommitISO('../web-dev-interview-playbook/README.md');
