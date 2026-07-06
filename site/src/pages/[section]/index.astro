@@ -6,7 +6,10 @@ import StatusBanner from '../../components/StatusBanner.astro';
 import Sidebar from '../../components/Sidebar.astro';
 import { sectionOf, sectionTitle, extractTitle, sortDocs, isSectionReadme, allSectionDirs } from '../../lib/content';
 import { getLastCommitISO } from '../../lib/freshness';
+import WidgetHost from '../../widgets/WidgetHost';
+import { SECTION_WIDGETS } from '../../widgets/manifest';
 import '../../styles/prose.css';
+import '../../styles/widgets.css';
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs');
@@ -24,6 +27,7 @@ const children = sortDocs(
 const entryFor = (id: string) => docs.find((d) => d.id === id)!;
 const rendered = readme ? await render(readme) : null;
 const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d.id) }));
+const widgets = SECTION_WIDGETS[section] ?? [];
 ---
 <BaseLayout title={sectionTitle(section)}>
   <Sidebar slot="sidebar" docs={navDocs} currentSection={section} />
@@ -32,6 +36,18 @@ const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d
       {readme?.data.status === 'updating' && <StatusBanner />}
       {rendered ? <rendered.Content /> : <h1>{sectionTitle(section)}</h1>}
     </article>
+    {widgets.length > 0 && (
+      <section class="widgets" aria-label="Interactive visualizations">
+        <h2 class="docs-heading">Interactive</h2>
+        {widgets.map((w) => (
+          <div class="widget-frame">
+            <h3 class="widget-frame-title">{w.title}</h3>
+            <p class="widget-frame-desc">{w.description}</p>
+            <WidgetHost client:visible widgetId={w.id} />
+          </div>
+        ))}
+      </section>
+    )}
     <h2 class="docs-heading">Study materials</h2>
     <ul class="doc-list">
       {children.map((id) => {
