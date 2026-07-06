@@ -4,6 +4,7 @@ import { Suspense, lazy, type ComponentType, type LazyExoticComponent } from 're
  * one chunk per widget; only widgets on the current page are ever fetched. */
 const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'event-loop-stepper': lazy(() => import('./event-loop/EventLoopStepper')),
+  'flexbox-playground': lazy(() => import('./flexbox/FlexboxPlayground')),
 };
 
 export default function WidgetHost({ widgetId }: { widgetId: string }) {
