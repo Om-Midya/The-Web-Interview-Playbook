@@ -38,7 +38,7 @@ const titleFor = (id: string) => {
 const { Content, headings } = await render(doc);
 const navDocs = all.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d.id) }));
 ---
-<BaseLayout title={title}>
+<BaseLayout title={title} searchable={doc.id !== 'roadmap'}>
   <Sidebar slot="sidebar" docs={navDocs} currentId={doc.id} currentSection={section ?? undefined} />
   <div class="doc-shell">
     <article class="prose">

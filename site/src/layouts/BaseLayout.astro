@@ -7,9 +7,11 @@ import '../styles/interactive.css';
 interface Props {
   title: string;
   description?: string;
+  /** When false the page is excluded from the Pagefind search index. */
+  searchable?: boolean;
 }
 
-const { title, description = 'Interactive web dev interview preparation' } = Astro.props;
+const { title, description = 'Interactive web dev interview preparation', searchable = true } = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
@@ -48,7 +50,7 @@ const { title, description = 'Interactive web dev interview preparation' } = Ast
     </header>
     <div class="shell">
       <slot name="sidebar" />
-      <main id="main-content" data-pagefind-body><slot /></main>
+      <main id="main-content" data-pagefind-body={searchable ? true : undefined}><slot /></main>
     </div>
     <style>
       .skip-link {
