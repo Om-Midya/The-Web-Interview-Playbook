@@ -32,7 +32,14 @@ const { title, description = 'Interactive web dev interview preparation' } = Ast
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="/">Web Interview <strong>Playbook</strong></a>
+      <a class="brand" href="/">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <circle cx="6.5" cy="17.5" r="3.4" />
+          <path d="M15 15 l6 6 m0 -6 l-6 6" />
+          <path d="M8 13 C 10 7, 14 8, 18 5.5" stroke-dasharray="3.5 3" />
+        </svg>
+        <span class="brand-text">Web Interview <strong>Playbook</strong></span>
+      </a>
       <div class="header-actions">
         <slot name="header-actions" />
         <SearchModal />
@@ -72,15 +79,27 @@ const { title, description = 'Interactive web dev interview preparation' } = Ast
         z-index: 10;
       }
       .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
         color: var(--text);
-        font-size: 1.05rem;
         transition: opacity 0.15s ease;
       }
       .brand:hover {
         text-decoration: none;
-        opacity: 0.8;
+        opacity: 0.85;
       }
-      .brand strong { color: var(--accent); }
+      .brand-mark { width: 1.5rem; height: 1.5rem; color: var(--accent); flex-shrink: 0; }
+      .brand-mark path[stroke-dasharray] { stroke: var(--accent-2); }
+      .brand-text { font-size: 0.95rem; }
+      .brand strong {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        color: var(--accent);
+      }
       .header-actions { display: flex; gap: 0.5rem; align-items: center; }
       .shell {
         display: flex;

@@ -15,7 +15,8 @@ const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d
 <BaseLayout title="Roadmap" description="Interactive 4-week interview preparation roadmap">
   <Sidebar slot="sidebar" docs={navDocs} />
   <div class="roadmap-page">
-    <h1>4-Week Preparation Roadmap</h1>
+    <p class="eyebrow">The game plan</p>
+    <h1 class="display roadmap-title">Four weeks to ready</h1>
     <p class="lede">
       Check off each day as you go — progress is saved in your browser.
       Based on <a href="/roadmap-source/">the full roadmap doc</a>.
@@ -31,5 +32,11 @@ const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d
 
 <style>
   .roadmap-page { max-width: var(--content-width); margin: 0 auto; }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-2);
+    margin: 0 0 0.5rem;
+  }
+  .roadmap-title { font-size: clamp(1.7rem, 3.4vw, 2.4rem); margin-bottom: 0.75rem; }
   .lede { color: var(--text-muted); }
 </style>

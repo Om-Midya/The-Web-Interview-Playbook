@@ -10,7 +10,7 @@ export default defineConfig({
 
   markdown: {
     shikiConfig: {
-      themes: { light: 'github-light', dark: 'github-dark' },
+      themes: { light: 'everforest-light', dark: 'everforest-dark' },
       defaultColor: false,
     },
     rehypePlugins: [rehypeChecklists, rehypeQaReveal, rehypePredict],

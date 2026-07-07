@@ -66,7 +66,12 @@ const widgets = SECTION_WIDGETS[section] ?? [];
 
 <style>
   .section-page { max-width: var(--content-width); margin: 0 auto; }
-  .docs-heading { margin-top: 2.5rem; font-size: 1.2rem; }
+  .docs-heading {
+    margin-top: 2.5rem; font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .docs-heading::after { content: ''; flex: 1; border-top: 2px dashed var(--border); }
   .doc-list { list-style: none; padding: 0; display: grid; gap: 0.5rem; }
   .doc-list li {
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;

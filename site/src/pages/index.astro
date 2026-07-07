@@ -36,17 +36,39 @@ const sectionMeta = sections.map((s) => {
 <BaseLayout title="Home">
   <div class="home">
     <section class="hero">
-      <p class="eyebrow">Web Interview Playbook</p>
-      <h1>Prepare the way interviewers <em>expect you to think</em>.</h1>
-      <p class="lede">
-        Interactive roadmaps, visualized concepts, and {docs.length}+ docs of questions,
-        answers, and mock interviews for web development interviews.
-      </p>
-      <a class="cta" href="/roadmap/">Start with the roadmap →</a>
-      <div class="hero-progress">
-        <ProgressRing prefix="" total={grandTotal} />
-        <p class="hero-progress-note">Your progress across every checklist — stored in your browser.</p>
+      <div class="hero-copy">
+        <p class="eyebrow">The web interview playbook</p>
+        <h1 class="display">Train for it.<br />Don't just read it.</h1>
+        <p class="lede">
+          Visualized concepts, drills, and {docs.length}+ docs of questions, answers,
+          and mock interviews — the plays interviewers expect you to know.
+        </p>
+        <a class="cta" href="/roadmap/">Start the 4-week plan →</a>
+        <div class="hero-progress">
+          <ProgressRing prefix="" total={grandTotal} />
+          <p class="hero-progress-note">Your training log — every checklist you tick, saved in your browser.</p>
+        </div>
       </div>
+      <svg class="play-diagram" viewBox="0 0 420 300" role="img" aria-label="A playbook diagram: a dashed route weaving past defenders toward the goal">
+        <g class="pd-marks" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+          <path d="M96 66 l26 26 m0 -26 l-26 26" />
+          <path d="M236 118 l26 26 m0 -26 l-26 26" />
+          <path d="M132 208 l26 26 m0 -26 l-26 26" />
+          <circle cx="52" cy="248" r="15" />
+          <circle cx="256" cy="34" r="15" class="pd-goal" />
+        </g>
+        <path
+          class="pd-route"
+          d="M52 228 C 60 160, 150 170, 196 150 S 300 120, 300 78 S 285 44, 271 40"
+          fill="none"
+          stroke-width="3.5"
+          stroke-dasharray="10 9"
+          stroke-linecap="round"
+        />
+        <path class="pd-arrowhead" d="M282 52 L269 38 L288 34 Z" />
+        <text x="30" y="288" class="pd-label">you</text>
+        <text x="284" y="26" class="pd-label">the offer</text>
+      </svg>
     </section>
 
     <section>
@@ -71,34 +93,63 @@ const sectionMeta = sections.map((s) => {
 </BaseLayout>
 
 <style>
-  .home { max-width: 960px; margin: 0 auto; display: grid; gap: 3.5rem; }
+  .home { max-width: 1020px; margin: 0 auto; display: grid; gap: 3.5rem; }
 
-  .hero { padding: 3.5rem 0 1.25rem; max-width: 40rem; }
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 2.5rem; align-items: center; padding: 3rem 0 1rem;
+  }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; }
+    .play-diagram { max-width: 320px; justify-self: center; }
+  }
   .eyebrow {
     font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-2);
     margin: 0 0 0.9rem;
   }
   .hero h1 {
-    font-size: clamp(2rem, 4.2vw, 2.75rem); line-height: 1.12; letter-spacing: -0.03em;
-    margin: 0 0 1.1rem;
+    font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.1;
+    margin: 0 0 1.1rem; color: var(--text);
   }
-  .hero em { color: var(--accent); font-style: normal; }
-  .lede { color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; }
+  .lede { color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; max-width: 34rem; }
   .cta {
     display: inline-block; margin-top: 0.9rem; background: var(--accent);
-    color: var(--accent-contrast); border-radius: var(--radius); padding: 0.65rem 1.15rem;
-    font-weight: 600; transition: filter 120ms ease, transform 120ms ease;
+    color: var(--accent-contrast); border-radius: var(--radius); padding: 0.7rem 1.25rem;
+    font-weight: 700; transition: filter 120ms ease, transform 120ms ease;
   }
-  .cta:hover { text-decoration: none; filter: brightness(1.08); transform: translateY(-1px); }
+  .cta:hover { text-decoration: none; filter: brightness(1.1); transform: translateY(-1px); }
 
-  .hero-progress { display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem; }
+  .hero-progress { display: flex; align-items: center; gap: 1rem; margin-top: 1.6rem; }
   .hero-progress-note { color: var(--text-muted); font-size: 0.85rem; max-width: 16rem; }
 
-  h2 {
-    font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--text-muted); margin: 0 0 1rem;
+  /* The signature: a chalk play, drawn on arrival. */
+  .play-diagram { width: 100%; height: auto; color: var(--text-muted); }
+  .pd-route {
+    stroke: var(--accent-2);
+    animation: pd-draw 1.4s ease-out 0.2s backwards;
   }
+  .pd-arrowhead { fill: var(--accent-2); animation: pd-pop 0.3s ease-out 1.5s backwards; }
+  .pd-goal { stroke: var(--accent); stroke-width: 3.5; }
+  .pd-label {
+    font-family: var(--font-mono); font-size: 12px; fill: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+  @keyframes pd-draw {
+    from { stroke-dashoffset: 76; opacity: 0; }
+    to { stroke-dashoffset: 0; opacity: 1; }
+  }
+  @keyframes pd-pop {
+    from { opacity: 0; transform: scale(0.5); transform-origin: 275px 45px; }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  h2 {
+    font-size: 0.82rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-muted); margin: 0 0 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  h2::after { content: ''; flex: 1; border-top: 2px dashed var(--border); }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.9rem; }
 

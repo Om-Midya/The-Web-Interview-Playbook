@@ -1,11 +1,18 @@
 @import './tokens.css';
+@import '@fontsource/atkinson-hyperlegible/400.css';
+@import '@fontsource/atkinson-hyperlegible/400-italic.css';
+@import '@fontsource/atkinson-hyperlegible/700.css';
+@import '@fontsource/archivo-black/400.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/600.css';
 
 * { box-sizing: border-box; }
 
 html {
-  color-scheme: light dark;
   scroll-behavior: smooth;
 }
+html[data-theme='light'] { color-scheme: light; }
+html[data-theme='dark'] { color-scheme: dark; }
 
 body {
   margin: 0;
@@ -18,16 +25,24 @@ body {
 }
 
 ::selection {
-  background: var(--accent);
-  color: var(--accent-contrast);
+  background: var(--accent-2);
+  color: #ffffff;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.25;
   letter-spacing: -0.01em;
   margin: 0 0 0.75em;
+}
+
+/* Display type is the poster voice — reserved for hero, brand, and play markers. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
 }
 
 p { margin: 0 0 1em; }
@@ -37,7 +52,7 @@ a {
   text-decoration: none;
   transition: color 0.15s ease, opacity 0.15s ease;
 }
-a:hover { text-decoration: underline; }
+a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 2px; }
 
 /* Visible keyboard focus everywhere, not just for mouse users. */
 a:focus-visible,
@@ -45,12 +60,12 @@ button:focus-visible,
 input:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-2);
   outline-offset: 2px;
   border-radius: var(--radius);
 }
 
-code { font-family: var(--font-mono); font-size: 0.925em; }
+code { font-family: var(--font-mono); font-size: 0.9em; }
 
 :not(pre) > code {
   background: var(--surface-2);
@@ -64,7 +79,14 @@ pre.astro-code {
   border-radius: var(--radius);
   padding: 1rem 1.25rem;
   overflow-x: auto;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+}
+
+/* Chalk rule — the site's divider grammar. */
+.chalk-rule {
+  border: none;
+  border-top: 2px dashed var(--border);
+  margin: 2.5rem 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

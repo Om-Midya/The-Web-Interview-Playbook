@@ -1,19 +1,28 @@
-/* Widget frame + engine styles. Tokens only. */
+/* Widget frame + engine styles. Tokens only.
+ * Widgets are "drills" on the board: marker-orange tab, chalk-thick border. */
 .widget-frame {
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
+  border-top: 3px solid var(--accent-2);
   border-radius: var(--radius-lg);
   background: var(--surface);
   padding: 1.25rem 1.4rem 1.4rem;
   margin: 1rem 0;
 }
+.widget-frame::before {
+  content: 'Drill';
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--accent-2);
+  margin-bottom: 0.35rem;
+}
 .widget-frame-title {
   margin: 0 0 0.25rem;
   font-size: 1.05rem;
   letter-spacing: -0.01em;
-}
-.widget-frame-title::before {
-  content: '⚡ ' / '';
-  color: var(--accent);
 }
 .widget-frame-desc {
   margin: 0 0 1rem;

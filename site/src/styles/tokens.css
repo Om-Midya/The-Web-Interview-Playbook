@@ -1,36 +1,43 @@
+/* Design system: "The Playbook" — a coach's tactics board for interview training.
+ * Light theme = playbook paper: warm off-white, deep board-green ink, marker orange.
+ * Dark theme = the chalkboard: green-black board, chalk text, chalk-mint + orange.
+ * Token NAMES are a contract with every widget/component — never rename, only retune. */
 :root {
-  --bg: #fafafa;
-  --surface: #ffffff;
-  --surface-2: #f1f0ee;
-  --text: #1a1a20;
-  --text-muted: #62626e;
-  --border: #e3e2df;
-  --accent: #5b5bd6;
+  --bg: #f4f4ef;
+  --surface: #fdfdfb;
+  --surface-2: #ebece3;
+  --text: #16281f;
+  --text-muted: #5b6d62;
+  --border: #d3d8cd;
+  --accent: #14614a;
   --accent-contrast: #ffffff;
-  --warn: #b45309;
-  --warn-bg: #fef3c7;
-  --fresh: #0d7d5c;
-  --fresh-bg: #d8f3e9;
+  --accent-2: #e8590c;
+  --warn: #a15208;
+  --warn-bg: #fbeedd;
+  --fresh: #0e7a55;
+  --fresh-bg: #dcf1e6;
   --radius: 8px;
   --radius-lg: 14px;
   --content-width: 72ch;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+  --font-display: 'Archivo Black', 'Arial Black', var(--font-sans);
+  --font-sans: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
 [data-theme='dark'] {
-  --bg: #101014;
-  --surface: #17171d;
-  --surface-2: #1f1f27;
-  --text: #ececf1;
-  --text-muted: #9a9aa8;
-  --border: #2a2a34;
-  --accent: #8b8bf4;
-  --accent-contrast: #101014;
-  --warn: #fbbf24;
-  --warn-bg: #422e06;
-  --fresh: #34d399;
-  --fresh-bg: #06301f;
+  --bg: #0e1c16;
+  --surface: #142420;
+  --surface-2: #1c3128;
+  --text: #e8eee6;
+  --text-muted: #98ae9f;
+  --border: #2b4236;
+  --accent: #6fd0a8;
+  --accent-contrast: #0e1c16;
+  --accent-2: #ff8a3d;
+  --warn: #f2b155;
+  --warn-bg: #3a2a10;
+  --fresh: #79d9ae;
+  --fresh-bg: #123527;
 }
 
 [data-theme='dark'] .astro-code,

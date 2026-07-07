@@ -26,13 +26,22 @@ const num = dir.slice(0, 2);
 
 <style>
   .card {
-    display: flex; flex-direction: column; gap: 0.35rem;
-    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    display: flex; flex-direction: column; gap: 0.5rem;
+    border: 1.5px solid var(--border); border-radius: var(--radius-lg);
     padding: 1.1rem 1.2rem; background: var(--surface); color: var(--text);
-    transition: border-color 120ms ease, transform 120ms ease;
+    transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
   }
-  .card:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
-  .num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); }
-  .card-title { font-weight: 650; letter-spacing: -0.01em; }
-  .meta { font-size: 0.8rem; color: var(--text-muted); display: flex; gap: 0.4rem; align-items: center; }
+  .card:hover {
+    border-color: var(--accent); transform: translateY(-2px); text-decoration: none;
+    box-shadow: 0 6px 18px -12px color-mix(in srgb, var(--text) 40%, transparent);
+  }
+  /* Play marker: the section's number as an O on the board. */
+  .num {
+    font-family: var(--font-display); font-size: 0.8rem; color: var(--accent);
+    border: 2px solid var(--accent); border-radius: 999px;
+    width: 2rem; height: 2rem; display: grid; place-items: center;
+  }
+  .card:hover .num { color: var(--accent-2); border-color: var(--accent-2); }
+  .card-title { font-weight: 700; letter-spacing: -0.01em; font-size: 1.02rem; }
+  .meta { font-size: 0.8rem; color: var(--text-muted); display: flex; gap: 0.4rem; align-items: center; font-family: var(--font-mono); }
 </style>
