@@ -8,6 +8,8 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'promise-state-machine': lazy(() => import('./promise/PromiseStateMachine')),
   'specificity-calculator': lazy(() => import('./specificity/SpecificityCalculator')),
   'box-model-explorer': lazy(() => import('./box-model/BoxModelExplorer')),
+  'hoisting-tdz-stepper': lazy(() => import('./hoisting/HoistingStepper')),
+  'this-binding-resolver': lazy(() => import('./this-binding/ThisBindingResolver')),
 };
 
 export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);

@@ -37,5 +37,15 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'Promise State Machine',
       description: 'resolve, reject, and try to change a settled promise — see which handlers fire and why settled means locked.',
     },
+    {
+      id: 'hoisting-tdz-stepper',
+      title: 'Hoisting & TDZ Stepper',
+      description: 'Watch the creation phase register var, let, and functions differently — then see exactly why the TDZ throws.',
+    },
+    {
+      id: 'this-binding-resolver',
+      title: 'this Binding Resolver',
+      description: 'Walk the priority ladder (new → bind → method → arrow → default) for real call sites and see what this becomes.',
+    },
   ],
 };
