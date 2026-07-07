@@ -15,6 +15,7 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'rerender-visualizer': lazy(() => import('./rerender/ReRenderVisualizer')),
   'useeffect-timeline': lazy(() => import('./effect/UseEffectTimeline')),
   'rendering-patterns': lazy(() => import('./rendering/RenderingPatterns')),
+  'closure-scope-stepper': lazy(() => import('./closure/ClosureScopeStepper')),
   'coercion-stepper': lazy(() => import('./coercion/CoercionStepper')),
 };
 

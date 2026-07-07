@@ -48,6 +48,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       description: 'Walk the priority ladder (new → bind → method → arrow → default) for real call sites and see what this becomes.',
     },
     {
+      id: 'closure-scope-stepper',
+      title: 'Closure Scope-Chain Diagram',
+      description: 'Watch makeCounter() return — and its scope refuse to die. See exactly what a closure keeps alive, and why var loops print 3, 3, 3.',
+    },
+    {
       id: 'coercion-stepper',
       title: 'Type Coercion Stepper',
       description: 'Walk [] == ![] one spec rule at a time and watch the expression rewrite itself to true — then never fear a coercion question again.',
