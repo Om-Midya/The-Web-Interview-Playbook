@@ -20,6 +20,7 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'coercion-stepper': lazy(() => import('./coercion/CoercionStepper')),
   'keys-reconciliation': lazy(() => import('./keys/KeysReconciliation')),
   'debounce-throttle': lazy(() => import('./debounce/DebounceTimeline')),
+  'nplusone-query': lazy(() => import('./nplusone/NPlusOneVisualizer')),
 };
 
 export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);

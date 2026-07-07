@@ -106,4 +106,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       description: 'Step through all four strategies and watch WHERE the work happens — build, server, or browser — and who ever sees a stale page.',
     },
   ],
+  '08-project-interview-bible': [
+    {
+      id: 'nplusone-query',
+      title: 'N+1 Query Visualizer',
+      description: 'Press Run and watch an innocent ORM loop fire 13 sequential queries — then run the JOIN and watch one bar do the same work in a fraction of the time.',
+    },
+  ],
 };
