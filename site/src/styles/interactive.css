@@ -1,0 +1,116 @@
+/* Checklists */
+input.progress-check {
+  accent-color: var(--accent);
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+li.task-done { color: var(--text-muted); }
+li.task-done > label, li.task-done { text-decoration: line-through; text-decoration-color: var(--border); }
+
+/* Q&A reveal cards */
+details.qa-reveal {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  margin: 0.6rem 0;
+}
+details.qa-reveal > summary {
+  cursor: pointer;
+  padding: 0.55rem 0.9rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--accent);
+  list-style: none;
+}
+details.qa-reveal > summary::before { content: '▸ '; }
+details.qa-reveal[open] > summary::before { content: '▾ '; }
+details.qa-reveal > .qa-reveal-body { padding: 0 0.9rem 0.75rem; }
+
+/* Predict-the-output */
+details.predict-reveal {
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  margin: 0.6rem 0 1.4rem;
+}
+details.predict-reveal > summary {
+  cursor: pointer;
+  padding: 0.6rem 0.9rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--accent);
+  list-style: none;
+}
+details.predict-reveal > .predict-reveal-body { padding: 0 0.9rem 0.75rem; }
+
+/* Progress ring */
+.ring-wrap { display: inline-grid; place-items: center; position: relative; }
+.ring-wrap svg { transform: rotate(-90deg); }
+.ring-track { stroke: var(--border); fill: none; }
+.ring-fill {
+  stroke: var(--accent);
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 400ms ease;
+}
+.ring-label {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.card-progress {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+/* Roadmap planner */
+.roadmap-week {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.roadmap-week h3 { margin: 0 0 0.25rem; }
+.roadmap-week .week-goal { color: var(--text-muted); font-size: 0.9rem; margin: 0 0 0.75rem; }
+.roadmap-day {
+  display: flex;
+  gap: 0.7rem;
+  align-items: baseline;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+}
+.roadmap-day:hover { background: var(--surface-2); }
+.roadmap-day input { accent-color: var(--accent); }
+.roadmap-day .day-name { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent); min-width: 2.6rem; }
+.roadmap-day.done .day-focus { text-decoration: line-through; color: var(--text-muted); }
+.roadmap-day .day-files { color: var(--text-muted); font-size: 0.8rem; }
+.week-bar { height: 6px; border-radius: 999px; background: var(--surface-2); overflow: hidden; margin: 0.5rem 0 0.9rem; }
+.week-bar > div { height: 100%; background: var(--accent); transition: width 300ms ease; }
+.week-checkpoint {
+  border-left: 3px solid var(--fresh);
+  background: var(--fresh-bg);
+  color: var(--fresh);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+/* Backup */
+.backup-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; margin-top: 2rem; }
+.backup-row button, .backup-row label.import-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 0.85rem;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+}
+.backup-row button:hover, .backup-row label.import-btn:hover { border-color: var(--accent); }
+.backup-note { font-size: 0.8rem; color: var(--text-muted); }
