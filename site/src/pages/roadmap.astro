@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import RoadmapPlanner from '../widgets/roadmap/RoadmapPlanner';
+import ProgressBackup from '../widgets/backup/ProgressBackup';
 import { parseRoadmap } from '../lib/roadmap';
 import { extractTitle } from '../lib/content';
 
@@ -24,6 +25,7 @@ const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d
     ) : (
       <p>The roadmap could not be parsed — read the <a href="/roadmap-source/">source document</a>.</p>
     )}
+    <ProgressBackup client:visible />
   </div>
 </BaseLayout>
 
