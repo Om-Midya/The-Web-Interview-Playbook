@@ -8,6 +8,9 @@ export interface SimApi<S> {
   playing: boolean;
   play: () => void;
   reset: () => void;
+  /** True in SnapshotView (reduced-motion / pre-hydration / no rAF) — renders
+   * should hide interactive controls that have no effect there. */
+  snapshot: boolean;
 }
 
 export interface SimSnapshot<S> {
@@ -33,11 +36,16 @@ function prefersReducedMotion(): boolean {
 }
 
 export default function Simulation<S, P>(props: SimulationProps<S, P>) {
-  const snapshotMode = useMemo(
-    () => prefersReducedMotion() || typeof requestAnimationFrame === 'undefined',
-    [],
-  );
-  return snapshotMode ? <SnapshotView {...props} /> : <LiveView {...props} />;
+  // Initialize in snapshot mode to match SSR (server has no rAF), then flip
+  // to live post-hydration in an effect. Avoids a hydration mismatch and the
+  // flash of a LiveView the server never rendered.
+  const [live, setLive] = useState(false);
+  useEffect(() => {
+    if (!prefersReducedMotion() && typeof requestAnimationFrame !== 'undefined') {
+      setLive(true);
+    }
+  }, []);
+  return live ? <LiveView {...props} /> : <SnapshotView {...props} />;
 }
 
 function LiveView<S, P>({ spec, params, render, ariaLabel }: SimulationProps<S, P>) {
@@ -116,6 +124,7 @@ function LiveView<S, P>({ spec, params, render, ariaLabel }: SimulationProps<S, 
     playing,
     play: () => setPlaying(true),
     reset,
+    snapshot: false,
   };
 
   return (
@@ -154,6 +163,7 @@ function SnapshotView<S, P>({ spec, params, render, snapshots, ariaLabel }: Simu
     playing: false,
     play: () => {},
     reset: () => setFrame(0),
+    snapshot: true,
   };
   return (
     <div className="sim" aria-label={ariaLabel}>

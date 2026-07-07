@@ -13,13 +13,18 @@ export interface Query {
   end: number;
 }
 
-export interface Summary { count: number; totalMs: number }
+export interface Summary { count: number; totalMs: number; rows: number; latencyMs: number }
 
 export interface NPlusOneState {
   now: number;
   /** Sim time the current run started; stays set after completion. */
   runStart: number | null;
   runMode: 'lazy' | 'join' | null;
+  /** Params the current/last run was started with — captured at startRun so
+   * a Summary always reflects the parameters it was actually run under, even
+   * if the controls change before the next run starts. */
+  runRows: number | null;
+  runLatencyMs: number | null;
   recorded: boolean;
   queries: Query[];
   lastRun: { lazy?: Summary; join?: Summary };
@@ -46,7 +51,15 @@ export function planQueries(p: NPlusOneParams): Query[] {
 }
 
 export function startRun(s: NPlusOneState, p: NPlusOneParams): NPlusOneState {
-  return { ...s, runStart: s.now, runMode: p.mode, recorded: false, queries: planQueries(p) };
+  return {
+    ...s,
+    runStart: s.now,
+    runMode: p.mode,
+    runRows: p.rows,
+    runLatencyMs: p.latencyMs,
+    recorded: false,
+    queries: planQueries(p),
+  };
 }
 
 /** ms since the current run started (0 when no run yet). */
@@ -62,17 +75,39 @@ export function firedCount(s: NPlusOneState): number {
 }
 
 export const NPLUSONE_SPEC: SimSpec<NPlusOneState, NPlusOneParams> = {
-  init: () => ({ now: 0, runStart: null, runMode: null, recorded: false, queries: [], lastRun: {} }),
+  init: () => ({
+    now: 0,
+    runStart: null,
+    runMode: null,
+    runRows: null,
+    runLatencyMs: null,
+    recorded: false,
+    queries: [],
+    lastRun: {},
+  }),
   tick(s) {
+    // Once a run is recorded (or none has started yet) there is nothing
+    // time-dependent left to show. Returning the SAME reference lets
+    // LiveView's identical-reference setState bail out, so the widget stops
+    // re-rendering at 60fps forever after a run completes.
+    if (s.runStart === null || s.recorded) return s;
     const now = s.now + TICK_MS;
-    if (s.runStart !== null && !s.recorded && s.runMode !== null && s.queries.length > 0) {
+    if (s.runMode !== null && s.queries.length > 0) {
       const endT = s.queries[s.queries.length - 1].end;
       if (now - s.runStart >= endT) {
         return {
           ...s,
           now,
           recorded: true,
-          lastRun: { ...s.lastRun, [s.runMode]: { count: s.queries.length, totalMs: endT } },
+          lastRun: {
+            ...s.lastRun,
+            [s.runMode]: {
+              count: s.queries.length,
+              totalMs: endT,
+              rows: s.runRows ?? 0,
+              latencyMs: s.runLatencyMs ?? 0,
+            },
+          },
         };
       }
     }
@@ -95,9 +130,13 @@ export function nplusoneSnapshots(p: NPlusOneParams): SimSnapshot<NPlusOneState>
   const lazyRun = [{ atTick: 0, apply: (st: NPlusOneState) => startRun(st, pLazy) }];
   const midTick = Math.ceil((lazyTotal / 2) / TICK_MS);
   const mid = runScript(NPLUSONE_SPEC, pLazy, midTick, lazyRun);
+  // The "one innocent query" frame must land while the parent query is still
+  // in flight — at low latency (e.g. 10ms) the parent finishes and children
+  // start well before a fixed tick like 2 (32ms).
+  const parentMidTick = Math.max(1, Math.floor(p.latencyMs / 2 / TICK_MS));
   return [
     {
-      atTick: 2,
+      atTick: parentMidTick,
       events: lazyRun,
       caption: 'The ORM fetches the post list — one innocent query.',
     },

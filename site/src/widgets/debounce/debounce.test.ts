@@ -68,6 +68,34 @@ describe('scheduled burst', () => {
   });
 });
 
+describe('same-tick ordering (event landing in the same tick as an expiry)', () => {
+  it('trailing debounce, waitMs 200: expiries settle before the colliding scheduled event applies', () => {
+    const p = P({ waitMs: 200 });
+    const s = runScript(DEBOUNCE_SPEC, p, 100, [{ atTick: 0, apply: scheduleBurst }]);
+    // Hand-walk: 0→200, 48→248, 96→296, 144→344, 192→392 (expires before 400's
+    // tick lands, so it must fire before the 400 event overwrites the deadline);
+    // 400→600, 448→648 fires; 960→1160 fires.
+    expect(s.debounceFires).toEqual([392, 648, 1160]);
+  });
+  it('leading debounce, waitMs 500: a settled deadline lets the colliding event fire leading-edge', () => {
+    const p = P({ waitMs: 500, debounceMode: 'leading' });
+    const s = runScript(DEBOUNCE_SPEC, p, 100, [{ atTick: 0, apply: scheduleBurst }]);
+    // Hand-walk: 0 fires (deadline 500); 48..448 each extend the deadline,
+    // landing on 948 after the 448 event; 948 expires strictly before the 960
+    // event lands, so 960 finds no pending deadline and fires leading-edge.
+    expect(s.debounceFires).toEqual([0, 960]);
+  });
+  it('leading throttle, waitMs 130: a window closing exactly at a colliding event reopens leading-edge', () => {
+    const p = P({ waitMs: 130, throttleMode: 'leading' });
+    const s = runScript(DEBOUNCE_SPEC, p, 100, [{ atTick: 0, apply: scheduleBurst }]);
+    // Hand-walk: 0 fires (window 130); 48/96 swallowed; window 130 expires
+    // at/before 144's tick, so 144 must fire leading-edge again (window 274);
+    // 192 swallowed; 274 expires before 400 → 400 fires (window 530); 448
+    // swallowed; 530 expires before 960 → 960 fires.
+    expect(s.throttleFires).toEqual([0, 144, 400, 960]);
+  });
+});
+
 describe('snapshots', () => {
   it('the settled caption embeds the actual computed counts', () => {
     const snaps = debounceSnapshots(P());

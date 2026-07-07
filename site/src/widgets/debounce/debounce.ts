@@ -62,6 +62,31 @@ export function addEvent(s: DebounceState, p: DebounceParams): DebounceState {
   return applyEventAt(s, p, s.now);
 }
 
+/** Resolve any expiry due at or before `uptoT`: fire a pending debounce
+ * deadline and close/chain the throttle window. The throttle branch loops —
+ * a trailing fire reopens a window that may itself have already expired
+ * within the same span (e.g. waitMs smaller than the gap being settled). */
+function settle(s: DebounceState, p: DebounceParams, uptoT: number): DebounceState {
+  let { debounceFires, debounceDeadline, throttleFires, throttleWindowEnd, throttlePending } = s;
+  if (debounceDeadline !== null && uptoT >= debounceDeadline) {
+    if (p.debounceMode === 'trailing') {
+      debounceFires = [...debounceFires, debounceDeadline];
+    }
+    debounceDeadline = null;
+  }
+  while (throttleWindowEnd !== null && uptoT >= throttleWindowEnd) {
+    if (p.throttleMode === 'trailing' && throttlePending) {
+      throttleFires = [...throttleFires, throttleWindowEnd];
+      throttleWindowEnd = throttleWindowEnd + p.waitMs; // rate limiting continues
+      throttlePending = false;
+    } else {
+      throttleWindowEnd = null;
+      throttlePending = false;
+    }
+  }
+  return { ...s, debounceFires, debounceDeadline, throttleFires, throttleWindowEnd, throttlePending };
+}
+
 /** Queue the demo burst relative to now; tick() consumes each when due. */
 export function scheduleBurst(s: DebounceState): DebounceState {
   return { ...s, scheduled: [...s.scheduled, ...BURST_OFFSETS.map((o) => s.now + o)].sort((a, b) => a - b) };
@@ -81,32 +106,17 @@ export const DEBOUNCE_SPEC: SimSpec<DebounceState, DebounceParams> = {
   tick(state, p) {
     const now = state.now + TICK_MS;
     let s: DebounceState = { ...state, now };
-    // 1. due scheduled events, at their exact times, ascending
+    // Due scheduled events, at their exact times, ascending. Settle any
+    // expiry due at the event's own time BEFORE applying it, so an event
+    // landing in the same tick as a deadline/window-end can never clobber
+    // an expiry that was strictly earlier.
     while (s.scheduled.length > 0 && s.scheduled[0] <= now) {
       const [t, ...rest] = s.scheduled;
+      s = settle(s, p, t);
       s = applyEventAt({ ...s, scheduled: rest }, p, t);
     }
-    // 2. debounce deadline
-    if (s.debounceDeadline !== null && now >= s.debounceDeadline) {
-      if (p.debounceMode === 'trailing') {
-        s = { ...s, debounceFires: [...s.debounceFires, s.debounceDeadline], debounceDeadline: null };
-      } else {
-        s = { ...s, debounceDeadline: null };
-      }
-    }
-    // 3. throttle window close
-    if (s.throttleWindowEnd !== null && now >= s.throttleWindowEnd) {
-      if (p.throttleMode === 'trailing' && s.throttlePending) {
-        s = {
-          ...s,
-          throttleFires: [...s.throttleFires, s.throttleWindowEnd],
-          throttleWindowEnd: s.throttleWindowEnd + p.waitMs, // rate limiting continues
-          throttlePending: false,
-        };
-      } else {
-        s = { ...s, throttleWindowEnd: null, throttlePending: false };
-      }
-    }
+    // Settle anything left expiring by `now` itself.
+    s = settle(s, p, now);
     return s;
   },
 };

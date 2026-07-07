@@ -41,17 +41,19 @@ export default function DebounceTimeline() {
           const lastEvent = s.events.length > 0 ? s.events[s.events.length - 1] : null;
           return (
             <div className="sim">
-              <div className="sim-actions">
-                <input
-                  className="sim-input"
-                  aria-label="Type here to generate input events"
-                  placeholder={api.playing ? 'type here — every keystroke is an event' : 'press Play, then type here'}
-                  onInput={() => api.dispatch((st) => addEvent(st, params))}
-                />
-                <button onClick={() => { api.dispatch(scheduleBurst); api.play(); }}>
-                  Simulate burst
-                </button>
-              </div>
+              {!api.snapshot && (
+                <div className="sim-actions">
+                  <input
+                    className="sim-input"
+                    aria-label="Type here to generate input events"
+                    placeholder={api.playing ? 'type here — every keystroke is an event' : 'press Play, then type here'}
+                    onInput={() => api.dispatch((st) => addEvent(st, params))}
+                  />
+                  <button onClick={() => { api.dispatch(scheduleBurst); api.play(); }}>
+                    Simulate burst
+                  </button>
+                </div>
+              )}
               <TimelineSvg height={136} label="Timeline: raw events, debounced calls, throttled calls">
                 <Lane y={Y.raw} label="raw events" />
                 <Lane y={Y.debounce} label={`debounce(${waitMs}ms, ${debounceMode})`} />

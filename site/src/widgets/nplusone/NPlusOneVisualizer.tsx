@@ -38,17 +38,19 @@ export default function NPlusOneVisualizer() {
           const total = s.queries.length > 0 ? s.queries[s.queries.length - 1].end : 0;
           return (
             <div className="sim">
-              <div className="sim-actions">
-                <button
-                  className="is-primary"
-                  onClick={() => {
-                    api.dispatch((st) => startRun(st, params));
-                    api.play();
-                  }}
-                >
-                  ▶ Run {mode === 'lazy' ? `lazy (${rows} rows)` : 'JOIN'}
-                </button>
-              </div>
+              {!api.snapshot && (
+                <div className="sim-actions">
+                  <button
+                    className="is-primary"
+                    onClick={() => {
+                      api.dispatch((st) => startRun(st, params));
+                      api.play();
+                    }}
+                  >
+                    ▶ Run {mode === 'lazy' ? `lazy (${rows} rows)` : 'JOIN'}
+                  </button>
+                </div>
+              )}
               {s.queries.length === 0 ? (
                 <p className="sim-summary">Press Run and watch the queries fire.</p>
               ) : (
@@ -74,13 +76,16 @@ export default function NPlusOneVisualizer() {
                 <span>queries <strong>{firedCount(s)}/{s.queries.length || '—'}</strong></span>
                 <span>elapsed <strong>{Math.min(el, total)} ms</strong></span>
               </div>
-              {s.lastRun.lazy && s.lastRun.join && (
-                <p className="sim-note">
-                  Same data, two strategies: lazy = {s.lastRun.lazy.count} queries · {s.lastRun.lazy.totalMs} ms —
-                  JOIN = {s.lastRun.join.count} query · {s.lastRun.join.totalMs} ms.
-                  The database was never the problem; the round trips were.
-                </p>
-              )}
+              {s.lastRun.lazy &&
+                s.lastRun.join &&
+                s.lastRun.lazy.rows === s.lastRun.join.rows &&
+                s.lastRun.lazy.latencyMs === s.lastRun.join.latencyMs && (
+                  <p className="sim-note">
+                    Same data, two strategies: lazy = {s.lastRun.lazy.count} queries · {s.lastRun.lazy.totalMs} ms —
+                    JOIN = {s.lastRun.join.count} query · {s.lastRun.join.totalMs} ms.
+                    The database was never the problem; the round trips were.
+                  </p>
+                )}
             </div>
           );
         }}

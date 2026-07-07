@@ -39,7 +39,7 @@ describe('run lifecycle', () => {
   it('a lazy run completes and records its summary once', () => {
     const p = P();
     const s = runScript(NPLUSONE_SPEC, p, 20, [{ atTick: 0, apply: (st) => startRun(st, p) }]);
-    expect(s.lastRun.lazy).toEqual({ count: 5, totalMs: 250 });
+    expect(s.lastRun.lazy).toEqual({ count: 5, totalMs: 250, rows: 4, latencyMs: 50 });
     expect(firedCount(s)).toBe(5);
   });
   it('running both modes keeps both summaries', () => {
@@ -49,8 +49,21 @@ describe('run lifecycle', () => {
       { atTick: 0, apply: (st) => startRun(st, p) },
       { atTick: 20, apply: (st) => startRun(st, pJoin) },
     ]);
-    expect(s.lastRun.lazy).toEqual({ count: 5, totalMs: 250 });
-    expect(s.lastRun.join).toEqual({ count: 1, totalMs: 75 });
+    expect(s.lastRun.lazy).toEqual({ count: 5, totalMs: 250, rows: 4, latencyMs: 50 });
+    expect(s.lastRun.join).toEqual({ count: 1, totalMs: 75, rows: 4, latencyMs: 50 });
+  });
+  it('a run at one latency does not get compared against a run at a different latency', () => {
+    // Guards against the cross-parameter comparison lie: lastRun must record
+    // the params each run actually executed under, not the current controls.
+    const pLazy = P({ latencyMs: 50 });
+    const pJoin = P({ mode: 'join', latencyMs: 10 });
+    const s = runScript(NPLUSONE_SPEC, pLazy, 40, [
+      { atTick: 0, apply: (st) => startRun(st, pLazy) },
+      { atTick: 20, apply: (st) => startRun(st, pJoin) },
+    ]);
+    expect(s.lastRun.lazy?.latencyMs).toBe(50);
+    expect(s.lastRun.join?.latencyMs).toBe(10);
+    expect(s.lastRun.lazy?.latencyMs).not.toBe(s.lastRun.join?.latencyMs);
   });
   it('elapsed and fired counts derive mid-run', () => {
     const p = P();
