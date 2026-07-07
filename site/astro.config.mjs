@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 
 import react from '@astrojs/react';
 import { rehypeChecklists } from './src/lib/transforms/rehype-checklists.ts';
+import { rehypeQaReveal } from './src/lib/transforms/rehype-qa-reveal.ts';
 
 export default defineConfig({
   output: 'static',
@@ -11,7 +12,7 @@ export default defineConfig({
       themes: { light: 'github-light', dark: 'github-dark' },
       defaultColor: false,
     },
-    rehypePlugins: [rehypeChecklists],
+    rehypePlugins: [rehypeChecklists, rehypeQaReveal],
   },
 
   integrations: [react()],
