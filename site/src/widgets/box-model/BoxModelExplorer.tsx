@@ -1,15 +1,6 @@
 import { useState, type ReactNode } from 'react';
-import PlaygroundFrame, { OptionRow } from '../engine/PlaygroundFrame';
+import PlaygroundFrame, { OptionRow, Slider } from '../engine/PlaygroundFrame';
 import { boxMetrics, type BoxConfig } from './box-model';
-
-function Slider({ label, min, max, value, onChange }: { label: string; min: number; max: number; value: number; onChange: (v: number) => void }) {
-  return (
-    <label className="playground-control pg-slider">
-      <span className="label">{label}: {value}px</span>
-      <input type="range" min={min} max={max} value={value} onChange={(e) => onChange(Number(e.target.value))} />
-    </label>
-  );
-}
 
 function Zone({ kind, pad, children }: { kind: string; pad: number; children: ReactNode }) {
   return (

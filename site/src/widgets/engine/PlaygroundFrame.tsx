@@ -49,3 +49,24 @@ export function OptionRow({
     </div>
   );
 }
+
+export function Slider({
+  label,
+  min,
+  max,
+  value,
+  onChange,
+}: {
+  label: string;
+  min: number;
+  max: number;
+  value: number;
+  onChange: (v: number) => void;
+}) {
+  return (
+    <label className="playground-control pg-slider">
+      <span className="label">{label}: {value}px</span>
+      <input type="range" min={min} max={max} value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </label>
+  );
+}
