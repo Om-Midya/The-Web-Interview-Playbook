@@ -12,7 +12,8 @@ function startsAnswer(node: RootContent): boolean {
   const text = first.children
     .map((c) => ('value' in c ? String(c.value) : ''))
     .join('');
-  return text.startsWith('Answer:');
+  // Matches "Answer:" and qualified forms like "Answer (strict mode):".
+  return /^Answer\b[^:]*:/.test(text);
 }
 
 /** Moves Answer and Why blocks of tricky-output docs behind a reveal. */

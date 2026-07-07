@@ -32,4 +32,18 @@ describe('rehypePredict', () => {
     );
     expect(out).not.toContain('predict-reveal');
   });
+  it('matches qualified answers like "Answer (strict mode):"', async () => {
+    const doc = [
+      '## Question 17',
+      '```javascript\nfoo();\n```',
+      '**Answer (non-strict):** `undefined`',
+      '**Why:** implicit globals.',
+    ].join('\n\n');
+    const out = String(await makeTestPipeline(rehypePredict, TRICKY_PATH).process(doc));
+    expect((out.match(/predict-reveal"/g) ?? []).length).toBe(1);
+    const details = out.indexOf('<details');
+    const answer = out.indexOf('Answer (non-strict)');
+    expect(details).toBeGreaterThan(-1);
+    expect(answer).toBeGreaterThan(details); // answer sits inside the details block
+  });
 });
