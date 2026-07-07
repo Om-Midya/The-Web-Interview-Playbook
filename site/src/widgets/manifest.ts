@@ -81,6 +81,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'useEffect Timeline',
       description: 'Pick a deps array, mount, update, unmount — and see precisely when the effect runs, skips, and cleans up.',
     },
+    {
+      id: 'keys-reconciliation',
+      title: 'Keys & Reconciliation Bug Demo',
+      description: 'Tick a row’s checkbox, delete another row under key={index}, and watch the state land on the WRONG person — then fix it with key={id}.',
+    },
   ],
   '05-node-express': [
     {

@@ -18,6 +18,7 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'rendering-patterns': lazy(() => import('./rendering/RenderingPatterns')),
   'closure-scope-stepper': lazy(() => import('./closure/ClosureScopeStepper')),
   'coercion-stepper': lazy(() => import('./coercion/CoercionStepper')),
+  'keys-reconciliation': lazy(() => import('./keys/KeysReconciliation')),
 };
 
 export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);
