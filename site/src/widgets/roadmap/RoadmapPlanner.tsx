@@ -39,7 +39,7 @@ export default function RoadmapPlanner({ weeks }: { weeks: RoadmapWeek[] }) {
                   />
                   <span className="day-name">{day.day}</span>
                   <span className="day-focus">{day.focus}</span>
-                  <span className="day-files">{day.files.replaceAll('`', '')}</span>
+                  <span className="day-files">{day.files}</span>
                 </label>
               );
             })}

@@ -38,12 +38,28 @@ describe('parseRoadmap', () => {
     expect(weeks[0].days[1]).toEqual({
       day: 'Tue',
       focus: 'HTML/CSS core',
-      files: '`01-html-css/topics-not-to-miss.md`, first 10 questions',
+      files: '01-html-css/topics-not-to-miss.md, first 10 questions',
     });
     expect(weeks[0].checkpoint).toBe('Can you explain your main project in 2 minutes?');
     expect(weeks[1].number).toBe(2);
   });
   it('fail-soft on garbage input', () => {
     expect(parseRoadmap('no weeks here')).toEqual([]);
+  });
+  it('strips markdown emphasis and code markers from cells', () => {
+    const md = [
+      '## Week 1: X',
+      '',
+      '**Goal:** G.',
+      '',
+      '| Day | Focus | Files to Study |',
+      '|-----|-------|----------------|',
+      '| Sat | **Project Bible** | `08-x/how.md`, write your pitch |',
+      '',
+      '**Week 1 checkpoint:** C.',
+    ].join('\n');
+    const weeks = parseRoadmap(md);
+    expect(weeks[0].days[0].focus).toBe('Project Bible');
+    expect(weeks[0].days[0].files).toBe('08-x/how.md, write your pitch');
   });
 });

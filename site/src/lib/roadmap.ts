@@ -12,6 +12,11 @@ export interface RoadmapWeek {
   checkpoint: string;
 }
 
+/** Strips inline markdown (bold/italic/code markers) from a table cell. */
+function stripInlineMd(cell: string): string {
+  return cell.replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1').replace(/`/g, '').trim();
+}
+
 /** Parses the corpus ROADMAP.md structure. Fail-soft: returns the weeks it
  * can parse; malformed sections are skipped rather than throwing. */
 export function parseRoadmap(body: string): RoadmapWeek[] {
@@ -31,7 +36,7 @@ export function parseRoadmap(body: string): RoadmapWeek[] {
       const cells = line.split('|').map((c) => c.trim());
       // | Day | Focus | Files | rows have 5 cells after split: '', d, f, files, ''
       if (cells.length >= 4 && cells[1] && cells[1] !== 'Day' && !/^-+$/.test(cells[1])) {
-        days.push({ day: cells[1], focus: cells[2] ?? '', files: cells[3] ?? '' });
+        days.push({ day: cells[1], focus: stripInlineMd(cells[2] ?? ''), files: stripInlineMd(cells[3] ?? '') });
       }
     }
     weeks.push({ number, title, goal, days, checkpoint });
