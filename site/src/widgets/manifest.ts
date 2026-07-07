@@ -55,6 +55,18 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       description: 'Capture down, bubble up: watch a click travel the DOM tree, stop it mid-flight, and see why delegation works.',
     },
   ],
+  '04-react': [
+    {
+      id: 'rerender-visualizer',
+      title: 'React Re-render Visualizer',
+      description: 'Fire state updates at different tree levels and watch exactly which components re-render — and what React.memo saves you.',
+    },
+    {
+      id: 'useeffect-timeline',
+      title: 'useEffect Timeline',
+      description: 'Pick a deps array, mount, update, unmount — and see precisely when the effect runs, skips, and cleans up.',
+    },
+  ],
   '05-node-express': [
     {
       id: 'middleware-pipeline',

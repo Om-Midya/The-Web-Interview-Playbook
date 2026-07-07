@@ -12,6 +12,8 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'this-binding-resolver': lazy(() => import('./this-binding/ThisBindingResolver')),
   'event-propagation': lazy(() => import('./propagation/EventPropagation')),
   'middleware-pipeline': lazy(() => import('./middleware/MiddlewarePipeline')),
+  'rerender-visualizer': lazy(() => import('./rerender/ReRenderVisualizer')),
+  'useeffect-timeline': lazy(() => import('./effect/UseEffectTimeline')),
 };
 
 export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);
