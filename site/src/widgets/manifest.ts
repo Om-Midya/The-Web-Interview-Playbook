@@ -24,6 +24,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'Box Model Explorer',
       description: 'Drag the sliders and flip box-sizing to see exactly where width goes — the classic border-box interview question, live.',
     },
+    {
+      id: 'grid-playground',
+      title: 'CSS Grid Playground',
+      description: 'Flip between fr, minmax(), and auto-fit tracks — every item shows its real pixel width, so the fr math finally clicks. Then lay out a whole page with named areas.',
+    },
   ],
   '02-javascript-core': [
     {
