@@ -55,7 +55,11 @@ export default function ProgressBackup() {
           type="file"
           accept="application/json"
           style={{ display: 'none' }}
-          onChange={(e) => importProgress(e.target.files?.[0])}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            e.target.value = '';
+            importProgress(file);
+          }}
         />
       </label>
       <span className="backup-note" role="status">{message || 'Back up your progress or move it to another device.'}</span>
