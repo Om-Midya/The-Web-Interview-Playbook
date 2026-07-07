@@ -40,9 +40,9 @@ export default function SpecificityCalculator() {
       </div>
       <p className="spec-verdict" aria-live="polite">{verdict}</p>
       <p className="spec-limits">
-        Scores are (IDs, classes+attributes+pseudo-classes, elements+pseudo-elements). Simplified: `:not()/:is()/:has()`
-        wrappers count zero but their arguments count; `:where()` counts zero entirely; inline styles and `!important`
-        sit outside this comparison.
+        Scores are (IDs, classes+attributes+pseudo-classes, elements+pseudo-elements). Simplified: :not()/:is()/:has()
+        wrappers count zero but their arguments count; :where() counts zero entirely; comma lists score as their
+        highest selector; inline styles and !important sit outside this comparison.
       </p>
     </div>
   );

@@ -21,9 +21,9 @@ export const RENDER_TRACES: StepperSample<RenderState>[] = [
     steps: [
       { line: 1, note: 'Client-Side Rendering: the server does almost nothing per-request.', state: S({ server: ['static file server'] }) },
       { line: 2, note: 'The HTML is an empty <div id="root"> — view-source shows nothing. Bad for SEO and slow first paint.', state: S({ server: ['sends shell + bundle'], browser: { screen: 'blank', label: '<div id="root"></div>', interactive: false } }) },
-      { line: 3, note: 'The browser must download, parse, and execute the bundle before ANYTHING renders.', state: S({ browser: { screen: 'blank', label: 'downloading JS…', interactive: false } }) },
-      { line: 5, note: 'Then data fetching starts — a second round trip. Spinners live here.', state: S({ browser: { screen: 'shell', label: 'layout + spinner', interactive: true } }) },
-      { line: 6, note: 'Content at last. Fully interactive, cheap servers — but the slowest first meaningful paint of the four.', state: S({ browser: { screen: 'content', label: 'dashboard ✓', interactive: true } }) },
+      { line: 3, note: 'The browser must download, parse, and execute the bundle before ANYTHING renders.', state: S({ server: ['sends shell + bundle'], browser: { screen: 'blank', label: 'downloading JS…', interactive: false } }) },
+      { line: 5, note: 'Then data fetching starts — a second round trip. Spinners live here.', state: S({ server: ['sends shell + bundle'], browser: { screen: 'shell', label: 'layout + spinner', interactive: true } }) },
+      { line: 6, note: 'Content at last. Fully interactive, cheap servers — but the slowest first meaningful paint of the four.', state: S({ server: ['sends shell + bundle'], browser: { screen: 'content', label: 'dashboard ✓', interactive: true } }) },
     ],
   },
   {
@@ -55,9 +55,9 @@ export const RENDER_TRACES: StepperSample<RenderState>[] = [
     steps: [
       { line: 1, note: 'Incremental Static Regeneration: SSG plus a freshness window per page.', state: S({ build: ['built with revalidate: 60'] }) },
       { line: 2, note: 'Inside the window it behaves exactly like SSG — instant cached responses.', state: S({ build: ['built with revalidate: 60'], server: ['cache hit'], browser: { screen: 'content', label: 'dashboard (cached)', interactive: true } }) },
-      { line: 4, note: 'Past the window, the visitor does NOT wait: they get the stale page immediately (stale-while-revalidate).', state: S({ server: ['cache STALE — serving anyway'], browser: { screen: 'stale', label: 'dashboard (stale)', interactive: true } }) },
-      { line: 5, note: 'Meanwhile the server re-renders the page in the background.', state: S({ server: ['cache STALE — serving anyway', 'regenerating in background…'], browser: { screen: 'stale', label: 'dashboard (stale)', interactive: true } }) },
-      { line: 6, note: 'The regenerated page replaces the cache — the NEXT visitor gets fresh content instantly. Nobody ever waited for a render.', state: S({ server: ['cache fresh again'], browser: { screen: 'content', label: 'dashboard ✓ (fresh)', interactive: true } }) },
+      { line: 4, note: 'Past the window, the visitor does NOT wait: they get the stale page immediately (stale-while-revalidate).', state: S({ build: ['built with revalidate: 60'], server: ['cache STALE — serving anyway'], browser: { screen: 'stale', label: 'dashboard (stale)', interactive: true } }) },
+      { line: 5, note: 'Meanwhile the server re-renders the page in the background.', state: S({ build: ['built with revalidate: 60'], server: ['cache STALE — serving anyway', 'regenerating in background…'], browser: { screen: 'stale', label: 'dashboard (stale)', interactive: true } }) },
+      { line: 6, note: 'The regenerated page replaces the cache — the NEXT visitor gets fresh content instantly. Nobody ever waited for a render.', state: S({ build: ['built with revalidate: 60'], server: ['cache fresh again'], browser: { screen: 'content', label: 'dashboard ✓ (fresh)', interactive: true } }) },
     ],
   },
 ];

@@ -19,6 +19,20 @@ describe('specificity', () => {
   it(':where() and its contents are zero', () => {
     expect(specificity(':where(#a .b) span')).toEqual([0, 0, 1]);
   });
+  it('functional pseudo-class arguments do not leak into element count', () => {
+    expect(specificity('li:nth-child(2n+1)')).toEqual([0, 1, 1]);
+    expect(specificity('li:nth-child(odd)')).toEqual([0, 1, 1]);
+  });
+  it('# inside attribute values is not an ID', () => {
+    expect(specificity('a[href="#top"]')).toEqual([0, 1, 1]);
+  });
+  it('comma lists score as their highest selector', () => {
+    expect(specificity('h1, h2')).toEqual([0, 0, 1]);
+    expect(specificity('.title, h1')).toEqual([0, 1, 0]);
+  });
+  it('leading underscore/hyphen class names count', () => {
+    expect(specificity('._private')).toEqual([0, 1, 0]);
+  });
 });
 
 describe('compareSpec', () => {

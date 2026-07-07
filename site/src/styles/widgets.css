@@ -363,5 +363,6 @@
 .browser-screen.blank { color: var(--text-muted); background: var(--surface-2); }
 .browser-screen.content { color: var(--text); }
 .browser-screen.stale { color: var(--warn); }
+.browser-screen.shell { color: var(--text-muted); }
 .interactive-badge { font-size: 0.66rem; border-radius: 999px; padding: 0.08rem 0.5rem; border: 1px solid var(--fresh); color: var(--fresh); margin-left: 0.5rem; }
 .interactive-badge.off { border-color: var(--border); color: var(--text-muted); }

@@ -14,7 +14,7 @@ function Pipe(state: MwState) {
           </span>
         ))}
       </div>
-      <ul className="fx-log" style={{ marginTop: '0.6rem' }}>
+      <ul className="fx-log" style={{ marginTop: '0.6rem', marginBottom: 0, paddingLeft: 0, listStyle: 'none' }}>
         {state.notes.map((n, i) => (
           <li className="fx-event" key={i}>{n}</li>
         ))}

@@ -27,7 +27,9 @@ export const APP_TREE: TreeNode = {
 export type RerenderAction = 'counter-state' | 'app-state';
 
 /** A state update re-renders its owner and every descendant — EXCEPT
- * React.memo components whose props are unchanged (when memo is enabled). */
+ * React.memo components whose props are unchanged (when memo is enabled).
+ * Scope: this model has no context consumers and no per-node state below the
+ * root — a memoized subtree containing either would still re-render in real React. */
 export function rerenderSet(action: RerenderAction, memoEnabled: boolean): Set<string> {
   if (action === 'counter-state') return new Set(['counter']);
   const out = new Set<string>();
