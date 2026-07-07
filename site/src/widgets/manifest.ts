@@ -48,4 +48,18 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       description: 'Walk the priority ladder (new → bind → method → arrow → default) for real call sites and see what this becomes.',
     },
   ],
+  '03-javascript-dom': [
+    {
+      id: 'event-propagation',
+      title: 'Event Propagation Visualizer',
+      description: 'Capture down, bubble up: watch a click travel the DOM tree, stop it mid-flight, and see why delegation works.',
+    },
+  ],
+  '05-node-express': [
+    {
+      id: 'middleware-pipeline',
+      title: 'Express Middleware Pipeline',
+      description: 'Follow a request through logger → auth → validate → handler, short-circuit a 401, and crash into the error middleware.',
+    },
+  ],
 };

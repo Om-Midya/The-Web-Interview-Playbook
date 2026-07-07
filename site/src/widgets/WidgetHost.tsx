@@ -10,6 +10,8 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'box-model-explorer': lazy(() => import('./box-model/BoxModelExplorer')),
   'hoisting-tdz-stepper': lazy(() => import('./hoisting/HoistingStepper')),
   'this-binding-resolver': lazy(() => import('./this-binding/ThisBindingResolver')),
+  'event-propagation': lazy(() => import('./propagation/EventPropagation')),
+  'middleware-pipeline': lazy(() => import('./middleware/MiddlewarePipeline')),
 };
 
 export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);
