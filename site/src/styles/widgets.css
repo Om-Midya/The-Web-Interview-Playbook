@@ -83,7 +83,7 @@
   margin-top: 0.9rem;
   flex-wrap: wrap;
 }
-.stepper-controls button, .pm-actions button, .kr-actions button {
+.stepper-controls button, .pm-actions button, .kr-actions button, .sim-actions button {
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -92,9 +92,9 @@
   padding: 0.35rem 0.8rem;
   cursor: pointer;
 }
-.stepper-controls button:hover:not(:disabled), .pm-actions button:hover:not(:disabled), .kr-actions button:hover:not(:disabled) { border-color: var(--accent); }
-.stepper-controls button:disabled, .pm-actions button:disabled, .kr-actions button:disabled { opacity: 0.45; cursor: default; }
-.stepper-controls button.is-primary, .pm-actions button.is-primary, .kr-actions button.is-primary {
+.stepper-controls button:hover:not(:disabled), .pm-actions button:hover:not(:disabled), .kr-actions button:hover:not(:disabled), .sim-actions button:hover:not(:disabled) { border-color: var(--accent); }
+.stepper-controls button:disabled, .pm-actions button:disabled, .kr-actions button:disabled, .sim-actions button:disabled { opacity: 0.45; cursor: default; }
+.stepper-controls button.is-primary, .pm-actions button.is-primary, .kr-actions button.is-primary, .sim-actions button.is-primary {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-contrast);
@@ -465,3 +465,43 @@
 .ga-main { background: var(--surface); }
 .ga-aside { background: color-mix(in srgb, var(--fresh) 14%, transparent); }
 .ga-footer { background: var(--surface-2); }
+
+/* ---- Simulation engine (Plan 6) ---- */
+.sim { display: grid; gap: 0.75rem; }
+.sim-caption {
+  margin: 0; min-height: 2.6em; font-size: 0.88rem; color: var(--text);
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 0.5rem 0.8rem;
+}
+.sim-summary { margin: 0; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
+.sim-note {
+  font-size: 0.84rem; border: 1px solid var(--border); border-left: 3px solid var(--accent-2);
+  border-radius: var(--radius); padding: 0.5rem 0.8rem; color: var(--text);
+  background: var(--surface-2); margin: 0;
+}
+.sim-input {
+  font-family: var(--font-mono); font-size: 0.85rem; color: var(--text);
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 0.45rem 0.7rem; width: 100%; max-width: 22rem;
+}
+.sim-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.sim-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.stepper-controls button.is-active { border-color: var(--accent); color: var(--accent); }
+
+.tl-svg {
+  width: 100%; height: auto; background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.tl-label { fill: var(--text-muted); font-family: var(--font-mono); font-size: 10px; }
+.tl-lane { stroke: var(--border); stroke-width: 1; }
+.tl-event { fill: var(--accent); }
+.tl-fire { fill: var(--accent-2); }
+.tl-cooldown { fill: color-mix(in srgb, var(--accent-2) 22%, transparent); }
+.tl-window { fill: color-mix(in srgb, var(--accent) 14%, transparent); }
+.tl-bar { fill: color-mix(in srgb, var(--accent) 18%, transparent); stroke: var(--accent); stroke-width: 1; }
+.tl-bar.is-done { fill: var(--fresh-bg); stroke: var(--fresh); }
+.tl-bar.is-pending { fill: transparent; stroke: var(--border); stroke-dasharray: 3 3; }
+.tl-bar-label { fill: var(--text); font-family: var(--font-mono); font-size: 9px; }
+
+.npo-readout { display: flex; gap: 1.2rem; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.8rem; }
+.npo-readout strong { color: var(--accent); }
