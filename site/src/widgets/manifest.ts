@@ -14,6 +14,16 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'Flexbox Playground',
       description: 'Flip one flex property at a time and watch the layout respond — the fastest way to internalize the main/cross axis.',
     },
+    {
+      id: 'specificity-calculator',
+      title: 'CSS Specificity Calculator',
+      description: 'Type two competing selectors and see the (IDs, classes, elements) scores battle — and why source order breaks ties.',
+    },
+    {
+      id: 'box-model-explorer',
+      title: 'Box Model Explorer',
+      description: 'Drag the sliders and flip box-sizing to see exactly where width goes — the classic border-box interview question, live.',
+    },
   ],
   '02-javascript-core': [
     {

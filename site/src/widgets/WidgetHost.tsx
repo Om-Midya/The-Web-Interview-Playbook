@@ -6,6 +6,8 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'event-loop-stepper': lazy(() => import('./event-loop/EventLoopStepper')),
   'flexbox-playground': lazy(() => import('./flexbox/FlexboxPlayground')),
   'promise-state-machine': lazy(() => import('./promise/PromiseStateMachine')),
+  'specificity-calculator': lazy(() => import('./specificity/SpecificityCalculator')),
+  'box-model-explorer': lazy(() => import('./box-model/BoxModelExplorer')),
 };
 
 export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);
