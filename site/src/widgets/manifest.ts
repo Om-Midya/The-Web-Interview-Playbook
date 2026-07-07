@@ -47,6 +47,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'this Binding Resolver',
       description: 'Walk the priority ladder (new → bind → method → arrow → default) for real call sites and see what this becomes.',
     },
+    {
+      id: 'coercion-stepper',
+      title: 'Type Coercion Stepper',
+      description: 'Walk [] == ![] one spec rule at a time and watch the expression rewrite itself to true — then never fear a coercion question again.',
+    },
   ],
   '03-javascript-dom': [
     {
