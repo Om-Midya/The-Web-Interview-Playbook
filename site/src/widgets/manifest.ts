@@ -62,6 +62,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'Type Coercion Stepper',
       description: 'Walk [] == ![] one spec rule at a time and watch the expression rewrite itself to true — then never fear a coercion question again.',
     },
+    {
+      id: 'debounce-throttle',
+      title: 'Debounce vs Throttle Timeline',
+      description: 'Type into a real input and watch your keystrokes race down three lanes — see the debounce timer restart on every key, and why throttle fires anyway.',
+    },
   ],
   '03-javascript-dom': [
     {
