@@ -2,8 +2,11 @@ import { visit } from 'unist-util-visit';
 import type { Root, Element } from 'hast';
 import { docIdFromPath } from './doc-id';
 
-/** Upgrades GFM task-list checkboxes (rendered disabled) to live checkboxes
- * carrying a stable per-file progress key. Fail-soft: unknown file → untouched. */
+/** Upgrades GFM task-list checkboxes (rendered disabled) to live checkboxes.
+ * Keys are POSITIONAL (`<docId>:<n>` in DOM order): editing a doc's checklist
+ * upstream shifts later keys and misattributes saved progress for that doc.
+ * Acceptable for a slow-moving corpus; if the corpus is ever restructured,
+ * bump the storage key to `playbook-progress-v2`. Fail-soft: unknown file → untouched. */
 export function rehypeChecklists() {
   return (tree: Root, file: { path?: string }) => {
     const docId = docIdFromPath(file.path);

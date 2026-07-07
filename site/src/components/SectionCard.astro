@@ -12,6 +12,8 @@ const num = dir.slice(0, 2);
     {checkTotal > 0 && (
       <span
         class="card-progress"
+        role="img"
+        aria-label={`${title} progress`}
         data-progress-ring
         data-progress-prefix={`${dir}/`}
         data-progress-total={String(checkTotal)}

@@ -5,7 +5,18 @@ export function docIdFromPath(p: string | undefined): string | null {
   return m ? m[1].toLowerCase() : null;
 }
 
-/** Counts GFM task-list items in raw markdown (build-time progress totals). */
+/** Counts GFM task-list items in raw markdown (build-time progress totals).
+ * Fence-aware: task-list syntax inside ``` / ~~~ code blocks is not a checkbox.
+ * Breadth is intentional: `-`/`*` bullets and upper/lowercase X match remark-gfm. */
 export function countCheckboxes(body: string): number {
-  return (body.match(/^\s*[-*]\s+\[[ xX]\]\s/gm) ?? []).length;
+  let inFence = false;
+  let count = 0;
+  for (const line of body.split('\n')) {
+    if (/^\s*(```|~~~)/.test(line)) {
+      inFence = !inFence;
+      continue;
+    }
+    if (!inFence && /^\s*[-*]\s+\[[ xX]\]\s/.test(line)) count++;
+  }
+  return count;
 }

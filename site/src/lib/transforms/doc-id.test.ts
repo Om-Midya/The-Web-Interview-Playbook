@@ -24,4 +24,18 @@ describe('countCheckboxes', () => {
   it('returns 0 when there are none', () => {
     expect(countCheckboxes('# heading\n- plain item')).toBe(0);
   });
+  it('ignores task-list syntax inside fenced code blocks', () => {
+    const md = [
+      '- [ ] real one',
+      '```',
+      '- [ ] inside fence',
+      '- [x] also inside',
+      '```',
+      '- [x] real two',
+      '~~~',
+      '- [ ] tilde fence',
+      '~~~',
+    ].join('\n');
+    expect(countCheckboxes(md)).toBe(2);
+  });
 });

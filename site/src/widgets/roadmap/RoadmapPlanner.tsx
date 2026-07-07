@@ -11,7 +11,12 @@ export default function RoadmapPlanner({ weeks }: { weeks: RoadmapWeek[] }) {
 
   function toggle(key: string, on: boolean) {
     saveKey(key, on);
-    setDone(loadProgress());
+    setDone((prev) => {
+      const next = { ...prev };
+      if (on) next[key] = true;
+      else delete next[key];
+      return next;
+    });
   }
 
   return (

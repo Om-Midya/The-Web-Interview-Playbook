@@ -27,7 +27,7 @@ export default function ProgressBackup() {
     a.href = url;
     a.download = 'playbook-progress.json';
     a.click();
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
     setMessage('Progress exported.');
   }
 

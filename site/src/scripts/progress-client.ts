@@ -1,13 +1,18 @@
 import { loadProgress, saveKey, countWithPrefix, PROGRESS_EVENT } from '../widgets/roadmap/storage';
 
-function restoreChecklists() {
+function syncCheckboxStates() {
   const saved = loadProgress();
   document.querySelectorAll<HTMLInputElement>('input.progress-check[data-progress-key]').forEach((box) => {
     const key = box.dataset.progressKey!;
     box.checked = key in saved;
     box.closest('li')?.classList.toggle('task-done', box.checked);
+  });
+}
+
+function bindChecklists() {
+  document.querySelectorAll<HTMLInputElement>('input.progress-check[data-progress-key]').forEach((box) => {
     box.addEventListener('change', () => {
-      saveKey(key, box.checked);
+      saveKey(box.dataset.progressKey!, box.checked);
       box.closest('li')?.classList.toggle('task-done', box.checked);
     });
   });
@@ -35,6 +40,13 @@ function paintProgress() {
   });
 }
 
-restoreChecklists();
+syncCheckboxStates();
+bindChecklists();
 paintProgress();
 document.addEventListener(PROGRESS_EVENT, paintProgress);
+window.addEventListener('pageshow', (e) => {
+  if ((e as PageTransitionEvent).persisted) {
+    syncCheckboxStates();
+    paintProgress();
+  }
+});
