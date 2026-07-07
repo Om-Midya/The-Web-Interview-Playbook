@@ -22,7 +22,7 @@ export const COERCION_TRACES: StepperSample<CoercionState>[] = [
       { line: 1, note: 'Abstract Equality rule: a boolean operand converts to a NUMBER first — before the other side is touched.', state: { expr: '[] == 0', rule: 'ToNumber(false) → 0', history: ['[] == ![]', '[] == false', '[] == 0'], verdict: null } },
       { line: 1, note: 'Object vs number → the object goes through ToPrimitive. [].toString() joins zero elements: "".', state: { expr: "'' == 0", rule: "ToPrimitive([]) → ''", history: ['[] == ![]', '[] == false', '[] == 0', "'' == 0"], verdict: null } },
       { line: 1, note: 'String vs number → the string converts with ToNumber. An empty string is 0.', state: { expr: '0 == 0', rule: "ToNumber('') → 0", history: ['[] == ![]', '[] == false', '[] == 0', "'' == 0", '0 == 0'], verdict: null } },
-      { line: 1, note: 'Same type at last: 0 equals 0. So [] == ![] is true — five silent conversions deep.', state: { expr: '0 == 0', rule: 'same type → strict compare', history: ['[] == ![]', '[] == false', '[] == 0', "'' == 0", '0 == 0'], verdict: 'true' } },
+      { line: 1, note: 'Same type at last: 0 equals 0. So [] == ![] is true — four silent conversions deep.', state: { expr: '0 == 0', rule: 'same type → strict compare', history: ['[] == ![]', '[] == false', '[] == 0', "'' == 0", '0 == 0'], verdict: 'true' } },
     ],
   },
   {
@@ -47,7 +47,7 @@ export const COERCION_TRACES: StepperSample<CoercionState>[] = [
       { line: 1, note: '…with no coercion at all. True, by decree.', state: { expr: 'null == undefined', rule: 'null ↔ undefined special case', history: ['null == undefined'], verdict: 'true' } },
       { line: 2, note: 'So null == 0 must also be true, right? No — that special case is the ONLY loose equality null has.', state: { expr: 'null == 0', rule: null, history: ['null == 0'], verdict: null } },
       { line: 2, note: 'No branch of the algorithm matches null vs number → false. Nothing even converts.', state: { expr: 'null == 0', rule: 'no matching branch → false', history: ['null == 0'], verdict: 'false' } },
-      { line: 3, note: 'But RELATIONAL operators run a different algorithm — they ToNumber both sides.', state: { expr: 'null >= 0', rule: null, history: ['null >= 0'], verdict: null } },
+      { line: 3, note: 'But RELATIONAL operators run a different algorithm — with no strings in play, they ToNumber both sides.', state: { expr: 'null >= 0', rule: null, history: ['null >= 0'], verdict: null } },
       { line: 3, note: 'ToNumber(null) is 0. (ToNumber(undefined) would be NaN — undefined >= 0 is false.)', state: { expr: '0 >= 0', rule: 'ToNumber(null) → 0', history: ['null >= 0', '0 >= 0'], verdict: null } },
       { line: 3, note: 'So null >= 0 is true while null == 0 is false. Different algorithms, different answers.', state: { expr: '0 >= 0', rule: '0 >= 0 → true', history: ['null >= 0', '0 >= 0'], verdict: 'true' } },
     ],
