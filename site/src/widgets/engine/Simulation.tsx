@@ -87,10 +87,25 @@ function LiveView<S, P>({ spec, params, render, ariaLabel }: SimulationProps<S, 
     setState(s);
   }
 
+  function flushQueue() {
+    if (queueRef.current.length === 0) return;
+    const q = queueRef.current;
+    queueRef.current = [];
+    let s = stateRef.current;
+    for (const fn of q) s = fn(s);
+    stateRef.current = s;
+    setState(s);
+  }
+
   function reset() {
     setPlaying(false);
     queueRef.current = [];
     applyNow(() => spec.init(paramsRef.current));
+  }
+
+  function togglePlaying() {
+    if (playing) flushQueue(); // pausing: apply anything still queued, in order
+    setPlaying(!playing);
   }
 
   const api: SimApi<S> = {
@@ -106,7 +121,7 @@ function LiveView<S, P>({ spec, params, render, ariaLabel }: SimulationProps<S, 
   return (
     <div className="sim" aria-label={ariaLabel}>
       <div className="stepper-controls">
-        <button className="is-primary" onClick={() => setPlaying((p) => !p)}>
+        <button className="is-primary" onClick={togglePlaying}>
           {playing ? '⏸ Pause' : '▶ Play'}
         </button>
         {SPEEDS.map((x) => (
