@@ -1,0 +1,7 @@
+# Local working material — never published
+docs/
+.claude/
+.superpowers/
+site/CLAUDE.md
+site/AGENTS.md
+site/.vscode/
