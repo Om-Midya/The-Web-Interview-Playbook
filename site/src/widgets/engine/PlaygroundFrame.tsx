@@ -56,16 +56,18 @@ export function Slider({
   max,
   value,
   onChange,
+  unit = 'px',
 }: {
   label: string;
   min: number;
   max: number;
   value: number;
   onChange: (v: number) => void;
+  unit?: string;
 }) {
   return (
     <label className="playground-control pg-slider">
-      <span className="label">{label}: {value}px</span>
+      <span className="label">{label}: {value}{unit}</span>
       <input type="range" min={min} max={max} value={value} onChange={(e) => onChange(Number(e.target.value))} />
     </label>
   );

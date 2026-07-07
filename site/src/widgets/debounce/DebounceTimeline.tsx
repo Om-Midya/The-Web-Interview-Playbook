@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import Simulation from '../engine/Simulation';
 import { OptionRow, Slider } from '../engine/PlaygroundFrame';
-import { EventDot, FireMarker, Lane, SVG_W, TimelineSvg, timeToX } from '../engine/sim-svg';
+import { EventDot, FireMarker, Lane, TimelineSvg, timeToX } from '../engine/sim-svg';
 import {
   DEBOUNCE_SPEC,
   addEvent,
@@ -27,7 +27,7 @@ export default function DebounceTimeline() {
   return (
     <div>
       <div className="playground-controls">
-        <Slider label="wait" min={100} max={1000} value={waitMs} onChange={setWaitMs} />
+        <Slider label="wait" min={100} max={1000} value={waitMs} onChange={setWaitMs} unit="ms" />
         <OptionRow label="debounce" options={['trailing', 'leading']} value={debounceMode} onChange={setDebounceMode} />
         <OptionRow label="throttle" options={['leading', 'trailing']} value={throttleMode} onChange={setThrottleMode} />
       </div>
