@@ -1,6 +1,6 @@
 ---
-interface Props { dir: string; title: string; docCount: number; fresh: boolean }
-const { dir, title, docCount, fresh } = Astro.props;
+interface Props { dir: string; title: string; docCount: number; fresh: boolean; checkTotal?: number }
+const { dir, title, docCount, fresh, checkTotal = 0 } = Astro.props;
 const num = dir.slice(0, 2);
 ---
 <a class="card" href={`/${dir}/`}>
@@ -9,6 +9,16 @@ const num = dir.slice(0, 2);
   <span class="meta">
     {docCount} docs
     {fresh && <span class="fresh-dot" title="Recently updated">⚡</span>}
+    {checkTotal > 0 && (
+      <span
+        class="card-progress"
+        data-progress-ring
+        data-progress-prefix={`${dir}/`}
+        data-progress-total={String(checkTotal)}
+      >
+        <span data-ring-label>0%</span>
+      </span>
+    )}
   </span>
 </a>
 

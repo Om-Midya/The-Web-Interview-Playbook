@@ -19,7 +19,9 @@ function paintProgress() {
   document.querySelectorAll<HTMLElement>('[data-progress-ring]').forEach((el) => {
     const prefix = el.dataset.progressPrefix ?? '';
     const total = Number(el.dataset.progressTotal ?? '0');
-    const done = countWithPrefix(prefix);
+    const done = prefix === ''
+      ? Object.keys(loadProgress()).filter((k) => /^\d{2}-/.test(k)).length
+      : countWithPrefix(prefix);
     const pct = total > 0 ? Math.min(100, Math.round((done / total) * 100)) : 0;
     const circle = el.querySelector<SVGCircleElement>('circle[data-ring-fill]');
     if (circle) {

@@ -2,8 +2,10 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionCard from '../components/SectionCard.astro';
+import ProgressRing from '../components/ProgressRing.astro';
 import { sectionOf, sectionTitle, extractTitle, isSectionReadme, allSectionDirs } from '../lib/content';
 import { getLastCommitISO, isRecent, formatDate } from '../lib/freshness';
+import { countCheckboxes } from '../lib/transforms/doc-id';
 
 const docs = await getCollection('docs');
 const sections = allSectionDirs(docs.map((d) => d.id));
@@ -16,10 +18,19 @@ const recentFeed = withDates
   .sort((a, b) => Date.parse(b.iso!) - Date.parse(a.iso!))
   .slice(0, 5);
 
+const checkTotals = new Map<string, number>();
+for (const s of sections) {
+  const total = docs
+    .filter((d) => sectionOf(d.id) === s && !isSectionReadme(d.id))
+    .reduce((sum, d) => sum + countCheckboxes(d.body ?? ''), 0);
+  checkTotals.set(s, total);
+}
+const grandTotal = [...checkTotals.values()].reduce((a, b) => a + b, 0);
+
 const sectionMeta = sections.map((s) => {
   const children = docs.filter((d) => sectionOf(d.id) === s && !isSectionReadme(d.id));
   const fresh = children.some((d) => d.filePath && isRecent(getLastCommitISO(d.filePath)));
-  return { dir: s, title: sectionTitle(s), docCount: children.length, fresh };
+  return { dir: s, title: sectionTitle(s), docCount: children.length, fresh, checkTotal: checkTotals.get(s) ?? 0 };
 });
 ---
 <BaseLayout title="Home">
@@ -32,6 +43,10 @@ const sectionMeta = sections.map((s) => {
         answers, and mock interviews for web development interviews.
       </p>
       <a class="cta" href="/roadmap/">Start with the roadmap →</a>
+      <div class="hero-progress">
+        <ProgressRing prefix="" total={grandTotal} />
+        <p class="hero-progress-note">Your progress across every checklist — stored in your browser.</p>
+      </div>
     </section>
 
     <section>
@@ -76,6 +91,9 @@ const sectionMeta = sections.map((s) => {
     font-weight: 600; transition: filter 120ms ease, transform 120ms ease;
   }
   .cta:hover { text-decoration: none; filter: brightness(1.08); transform: translateY(-1px); }
+
+  .hero-progress { display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem; }
+  .hero-progress-note { color: var(--text-muted); font-size: 0.85rem; max-width: 16rem; }
 
   h2 {
     font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;

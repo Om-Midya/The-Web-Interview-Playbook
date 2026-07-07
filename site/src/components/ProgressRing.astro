@@ -1,0 +1,20 @@
+---
+interface Props { prefix: string; total: number; size?: number }
+const { prefix, total, size = 88 } = Astro.props;
+const stroke = 7;
+const r = (size - stroke) / 2;
+---
+<span
+  class="ring-wrap"
+  data-progress-ring
+  data-progress-prefix={prefix}
+  data-progress-total={String(total)}
+  role="img"
+  aria-label="Overall progress"
+>
+  <svg width={size} height={size}>
+    <circle class="ring-track" cx={size / 2} cy={size / 2} r={r} stroke-width={stroke} />
+    <circle class="ring-fill" data-ring-fill cx={size / 2} cy={size / 2} r={r} stroke-width={stroke} />
+  </svg>
+  <span class="ring-label" data-ring-label>0%</span>
+</span>
