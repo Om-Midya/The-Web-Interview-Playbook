@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import RoadmapPlanner from '../widgets/roadmap/RoadmapPlanner';
+import { parseRoadmap } from '../lib/roadmap';
+import { extractTitle } from '../lib/content';
+
+const docs = await getCollection('docs');
+const roadmapDoc = docs.find((d) => d.id === 'roadmap');
+const weeks = roadmapDoc ? parseRoadmap(roadmapDoc.body ?? '') : [];
+const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d.id) }));
+---
+<BaseLayout title="Roadmap" description="Interactive 4-week interview preparation roadmap">
+  <Sidebar slot="sidebar" docs={navDocs} />
+  <div class="roadmap-page">
+    <h1>4-Week Preparation Roadmap</h1>
+    <p class="lede">
+      Check off each day as you go — progress is saved in your browser.
+      Based on <a href="/roadmap-source/">the full roadmap doc</a>.
+    </p>
+    {weeks.length > 0 ? (
+      <RoadmapPlanner client:load weeks={weeks} />
+    ) : (
+      <p>The roadmap could not be parsed — read the <a href="/roadmap-source/">source document</a>.</p>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .roadmap-page { max-width: var(--content-width); margin: 0 auto; }
+  .lede { color: var(--text-muted); }
+</style>

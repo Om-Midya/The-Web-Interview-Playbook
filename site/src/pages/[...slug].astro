@@ -13,7 +13,10 @@ export async function getStaticPaths() {
   const docs = await getCollection('docs');
   return docs
     .filter((d) => d.id !== 'readme' && !isSectionReadme(d.id))
-    .map((doc) => ({ params: { slug: doc.id }, props: { doc, all: docs } }));
+    .map((doc) => ({
+      params: { slug: doc.id === 'roadmap' ? 'roadmap-source' : doc.id },
+      props: { doc, all: docs },
+    }));
 }
 
 const { doc, all } = Astro.props;
