@@ -117,6 +117,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'Cache Flow Simulator',
       description: 'Follow every request through Browser → CDN → Redis → DB, tune the TTL, then unleash a thundering herd and watch the database take the hit.',
     },
+    {
+      id: 'websocket-pubsub',
+      title: 'WebSocket + Redis Pub/Sub',
+      description: 'Send a message from a client on server 1 and watch clients on server 2 miss it — then switch on the Redis bus and see the fan-out fix scaling.',
+    },
   ],
   '08-project-interview-bible': [
     {
