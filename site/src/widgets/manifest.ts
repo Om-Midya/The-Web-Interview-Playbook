@@ -103,6 +103,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'Express Middleware Pipeline',
       description: 'Follow a request through logger → auth → validate → handler, short-circuit a 401, and crash into the error middleware.',
     },
+    {
+      id: 'jwt-decoder',
+      title: 'JWT: Sign, Verify, Tamper',
+      description: 'Edit a real token signed live in your browser, then tamper the payload and watch the signature scream — the whole JWT security model in one box.',
+    },
   ],
   '06-nextjs': [
     {
