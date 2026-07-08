@@ -106,6 +106,13 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       description: 'Step through all four strategies and watch WHERE the work happens — build, server, or browser — and who ever sees a stale page.',
     },
   ],
+  '07-system-design': [
+    {
+      id: 'load-balancer',
+      title: 'Load Balancer Algorithms',
+      description: 'Crank the traffic, slow one server down, and watch round-robin drown it while least-connections routes around — the difference explained in one animation.',
+    },
+  ],
   '08-project-interview-bible': [
     {
       id: 'nplusone-query',
