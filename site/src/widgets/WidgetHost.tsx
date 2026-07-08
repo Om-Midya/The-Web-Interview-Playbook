@@ -22,6 +22,7 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'debounce-throttle': lazy(() => import('./debounce/DebounceTimeline')),
   'nplusone-query': lazy(() => import('./nplusone/NPlusOneVisualizer')),
   'load-balancer': lazy(() => import('./loadbalancer/LoadBalancer')),
+  'cache-flow': lazy(() => import('./cache/CacheFlow')),
 };
 
 export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);

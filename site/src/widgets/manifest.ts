@@ -112,6 +112,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'Load Balancer Algorithms',
       description: 'Crank the traffic, slow one server down, and watch round-robin drown it while least-connections routes around — the difference explained in one animation.',
     },
+    {
+      id: 'cache-flow',
+      title: 'Cache Flow Simulator',
+      description: 'Follow every request through Browser → CDN → Redis → DB, tune the TTL, then unleash a thundering herd and watch the database take the hit.',
+    },
   ],
   '08-project-interview-bible': [
     {
