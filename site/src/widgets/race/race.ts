@@ -3,7 +3,7 @@ import type { SimSnapshot } from '../engine/Simulation';
 
 export interface RaceParams {
   lock: boolean;
-  staggerMs: number; // 0–1000; window closes at ≥688 (A's write completion)
+  staggerMs: number; // 0–1000; the no-lock race window closes once B's read ENDS after A's write (B start ≥ ~481)
 }
 
 export type RacePhase =
@@ -155,9 +155,13 @@ export function raceSnapshots(p: RaceParams): SimSnapshot<RaceState>[] {
       : `Both transactions read: A saw ${mid.users[0].sawStock ?? '…'}, B saw ${mid.users[1].sawStock ?? '…'} — the same seat.` },
     { atTick: 46, events: ev, caption: p.lock
       ? `B is still ${late.users[1].phase} — the lock serializes access. Stock: ${late.stock}.`
-      : `Both passed validation (they both saw 1). Stock is now ${late.stock} and falling.` },
+      : final.users[1].phase === 'rejected'
+        ? `B read too late — it saw stock ${final.users[1].sawStock} after A's write. No race this time.`
+        : `Both passed validation (they both saw 1). Stock is now ${late.stock} and falling.` },
     { atTick: 120, events: ev, caption: p.lock
       ? `Final: stock ${final.stock}. A ${final.users[0].phase}, B ${final.users[1].phase} — the lock turned a corruption into a clean 409.`
-      : `Final: stock ${final.stock}. Both buyers ${final.users[0].phase} — the seat was sold twice.` },
+      : final.stock < 0
+        ? `Final: stock ${final.stock}. Both buyers ${final.users[0].phase} — the seat was sold twice.`
+        : `Final: stock ${final.stock}. A ${final.users[0].phase}, B ${final.users[1].phase} — B's read landed after A's write, so the window closed on its own.` },
   ];
 }

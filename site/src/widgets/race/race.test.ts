@@ -47,4 +47,11 @@ describe('snapshots', () => {
     const last = snaps[snaps.length - 1];
     expect(last.caption).toContain('-1');
   });
+
+  it('no-lock captions stay truthful when the stagger closes the window', () => {
+    const snaps = raceSnapshots(P({ staggerMs: 600 }));
+    const last = snaps[snaps.length - 1].caption;
+    expect(last).not.toContain('sold twice');
+    expect(last).toContain('stock 0');
+  });
 });

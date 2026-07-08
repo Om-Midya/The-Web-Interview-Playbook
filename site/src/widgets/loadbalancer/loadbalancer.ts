@@ -147,7 +147,7 @@ export function lbSnapshots(p: LbParams): SimSnapshot<LbState>[] {
       `${(st.now / 1000).toFixed(1)}s of traffic, routed by ${p.algorithm}: ${st.spawned} requests so far.`,
       `Queues per server: [${q.join(', ')}] — handled: [${st.handled.join(', ')}].`,
       `Server 2${p.slowServer ? ' is 3× slower' : ''}: its queue is ${q[1]}, neighbors ${q[0]} and ${q[2]}.`,
-      `After ${(st.now / 1000).toFixed(0)}s — handled [${st.handled.join(', ')}], queued [${q.join(', ')}].${p.slowServer && p.algorithm === 'round-robin' ? ' Round-robin never noticed the slow server.' : ''}`,
+      `After ${(st.now / 1000).toFixed(0)}s — handled [${st.handled.join(', ')}], queued [${q.join(', ')}].${p.slowServer && p.algorithm === 'round-robin' && q[1] > 0 ? ' Round-robin never noticed the slow server.' : ''}`,
     ];
     return { atTick: n, caption: captions[i] };
   });

@@ -58,7 +58,7 @@ export default function LoadBalancer() {
                   y={y}
                   w={120}
                   h={30}
-                  label={`server ${i}${params.slowServer && i === 1 ? ' (slow)' : ''}`}
+                  label={`server ${i + 1}${params.slowServer && i === 1 ? ' (slow)' : ''}`}
                   status={s.serving[i] !== null ? 'busy' : 'idle'}
                 />
               ))}
@@ -78,7 +78,7 @@ export default function LoadBalancer() {
             <div className="sim-readout">
               {[0, 1, 2].map((i) => (
                 <span key={i}>
-                  server {i}: handled <strong>{s.handled[i]}</strong> · queued <strong>{s.queues[i].length}</strong>
+                  server {i + 1}: handled <strong>{s.handled[i]}</strong> · queued <strong>{s.queues[i].length}</strong>
                 </span>
               ))}
             </div>
