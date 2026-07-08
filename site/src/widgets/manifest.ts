@@ -74,6 +74,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'Event Propagation Visualizer',
       description: 'Capture down, bubble up: watch a click travel the DOM tree, stop it mid-flight, and see why delegation works.',
     },
+    {
+      id: 'rendering-pipeline',
+      title: 'Browser Rendering Pipeline',
+      description: 'Step through DOM → Style → Layout → Paint → Composite, then change width vs transform and see exactly which stages relight — and why transform stays at 60fps.',
+    },
   ],
   '04-react': [
     {

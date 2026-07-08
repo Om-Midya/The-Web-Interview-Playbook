@@ -25,6 +25,7 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'cache-flow': lazy(() => import('./cache/CacheFlow')),
   'double-booking-race': lazy(() => import('./race/DoubleBookingRace')),
   'websocket-pubsub': lazy(() => import('./pubsub/PubSub')),
+  'rendering-pipeline': lazy(() => import('./pipeline/RenderingPipeline')),
 };
 
 export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);
