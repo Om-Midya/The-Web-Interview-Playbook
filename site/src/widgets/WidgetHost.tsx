@@ -23,6 +23,7 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'nplusone-query': lazy(() => import('./nplusone/NPlusOneVisualizer')),
   'load-balancer': lazy(() => import('./loadbalancer/LoadBalancer')),
   'cache-flow': lazy(() => import('./cache/CacheFlow')),
+  'double-booking-race': lazy(() => import('./race/DoubleBookingRace')),
 };
 
 export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);

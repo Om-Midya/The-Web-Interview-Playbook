@@ -124,5 +124,10 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'N+1 Query Visualizer',
       description: 'Press Run and watch an innocent ORM loop fire 13 sequential queries — then run the JOIN and watch one bar do the same work in a fraction of the time.',
     },
+    {
+      id: 'double-booking-race',
+      title: 'Double-Booking Race',
+      description: 'Two buyers, one seat, 80 milliseconds apart. Watch the oversell happen — then turn on the row lock and watch the database say no.',
+    },
   ],
 };
