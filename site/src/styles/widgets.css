@@ -505,3 +505,38 @@
 
 .npo-readout { display: flex; gap: 1.2rem; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.8rem; }
 .npo-readout strong { color: var(--accent); }
+
+/* ---- Wave 2: topology primitives + race lanes ---- */
+.topo-node { fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+.topo-node.is-busy { stroke: var(--accent); }
+.topo-node.is-blocked { stroke: var(--accent-2); stroke-dasharray: 4 3; }
+.topo-node.is-down { stroke: var(--warn); opacity: 0.55; }
+.topo-label { fill: var(--text); font-family: var(--font-mono); font-size: 10px; }
+.topo-edge { stroke: var(--border); stroke-width: 1; }
+.topo-dot.is-a { fill: var(--accent); }
+.topo-dot.is-b { fill: var(--accent-2); }
+.topo-dot.is-c { fill: var(--fresh); }
+.topo-dot.is-ok { fill: var(--fresh); }
+.topo-dot.is-warn { fill: var(--warn); }
+.topo-badge-bg { fill: var(--accent-2); }
+.topo-badge { fill: var(--accent-contrast); font-family: var(--font-mono); font-size: 9px; font-weight: 700; }
+
+.sim-readout { display: flex; gap: 1.2rem; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.8rem; }
+.sim-readout strong { color: var(--accent); }
+
+.race-lanes { display: grid; gap: 0.6rem; }
+.race-lane { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+.race-user { font-family: var(--font-mono); font-size: 0.78rem; min-width: 4.2rem; color: var(--text-muted); }
+.race-chip {
+  font-family: var(--font-mono); font-size: 0.7rem; border: 1px solid var(--border);
+  border-radius: 999px; padding: 0.1rem 0.55rem; color: var(--text-muted);
+}
+.race-chip.is-current { border-color: var(--accent); color: var(--text); }
+.race-chip.is-done { border-color: var(--fresh); color: var(--fresh); }
+.race-chip.is-blocked { border-style: dashed; border-color: var(--accent-2); color: var(--accent-2); }
+.race-chip.is-rejected { border-color: var(--warn); color: var(--warn); }
+.race-stock {
+  font-family: var(--font-mono); font-size: 0.9rem; border: 1.5px solid var(--accent);
+  border-radius: var(--radius); padding: 0.4rem 0.8rem; display: inline-block;
+}
+.race-stock.is-oversold { border-color: var(--warn); color: var(--warn); font-weight: 700; }
