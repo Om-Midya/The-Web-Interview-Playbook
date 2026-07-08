@@ -127,7 +127,7 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
     {
       id: 'nplusone-query',
       title: 'N+1 Query Visualizer',
-      description: 'Press Run and watch an innocent ORM loop fire 13 sequential queries — then run the JOIN and watch one bar do the same work in a fraction of the time.',
+      description: 'Press Run and watch an innocent ORM loop fire query after sequential query — then run the JOIN and watch one bar do the same work in a fraction of the time.',
     },
     {
       id: 'double-booking-race',

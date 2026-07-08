@@ -31,19 +31,20 @@ const SPEEDS = [1, 2, 4] as const;
 /** Cap accumulated time so a backgrounded tab doesn't fast-forward on return. */
 const MAX_ACC_MS = TICK_MS * 60;
 
-function prefersReducedMotion(): boolean {
-  return typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
-
 export default function Simulation<S, P>(props: SimulationProps<S, P>) {
   // Initialize in snapshot mode to match SSR (server has no rAF), then flip
   // to live post-hydration in an effect. Avoids a hydration mismatch and the
   // flash of a LiveView the server never rendered.
   const [live, setLive] = useState(false);
   useEffect(() => {
-    if (!prefersReducedMotion() && typeof requestAnimationFrame !== 'undefined') {
-      setLive(true);
+    if (typeof requestAnimationFrame === 'undefined' || typeof matchMedia === 'undefined') {
+      return;
     }
+    const mq = matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setLive(!mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
   }, []);
   return live ? <LiveView {...props} /> : <SnapshotView {...props} />;
 }
@@ -128,7 +129,7 @@ function LiveView<S, P>({ spec, params, render, ariaLabel }: SimulationProps<S, 
   };
 
   return (
-    <div className="sim" aria-label={ariaLabel}>
+    <div className="sim" role="group" aria-label={ariaLabel}>
       <div className="stepper-controls">
         <button className="is-primary" onClick={togglePlaying}>
           {playing ? '⏸ Pause' : '▶ Play'}
@@ -166,7 +167,7 @@ function SnapshotView<S, P>({ spec, params, render, snapshots, ariaLabel }: Simu
     snapshot: true,
   };
   return (
-    <div className="sim" aria-label={ariaLabel}>
+    <div className="sim" role="group" aria-label={ariaLabel}>
       <p className="sim-caption" aria-live="polite">{snapshots[idx].caption}</p>
       {render(states[idx], api)}
       <div className="stepper-controls">
