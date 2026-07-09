@@ -137,6 +137,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'WebSocket + Redis Pub/Sub',
       description: 'Send a message from a client on server 1 and watch clients on server 2 miss it — then switch on the Redis bus and see the fan-out fix scaling.',
     },
+    {
+      id: 'cap-theorem',
+      title: 'CAP Theorem: Cut the Wire',
+      description: 'Partition two replicas, choose consistency or availability, and watch your bank balance lie — or your writes bounce. CAP stops being abstract.',
+    },
   ],
   '08-project-interview-bible': [
     {

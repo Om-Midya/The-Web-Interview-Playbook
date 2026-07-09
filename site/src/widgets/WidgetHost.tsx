@@ -28,6 +28,7 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'rendering-pipeline': lazy(() => import('./pipeline/RenderingPipeline')),
   'jwt-decoder': lazy(() => import('./jwt/JwtDecoder')),
   'use-client-boundary': lazy(() => import('./useclient/UseClientBoundary')),
+  'cap-theorem': lazy(() => import('./cap/CapTheorem')),
 };
 
 export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);
