@@ -47,6 +47,13 @@ describe('webcrypto signing', () => {
     expect((JSON.parse(b64urlDecode(p2)) as { role: string }).role).toBe('admin');
     expect(await verifyToken(bad, DEFAULT_SECRET)).toBe(false);
   });
+  it('tampering an empty-object payload still yields valid JSON', async () => {
+    const tok = await signToken('{}', DEFAULT_SECRET);
+    const bad = tamperToken(tok);
+    const payload = JSON.parse(b64urlDecode(bad.split('.')[1])) as { role: string };
+    expect(payload.role).toBe('admin');
+    expect(await verifyToken(bad, DEFAULT_SECRET)).toBe(false);
+  });
 });
 
 describe('auth flow trace', () => {

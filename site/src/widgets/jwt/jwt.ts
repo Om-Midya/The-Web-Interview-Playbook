@@ -99,6 +99,8 @@ export function tamperToken(token: string): string {
   }
   const tampered = /"role":\s*"user"/.test(payloadJson)
     ? payloadJson.replace(/"role":\s*"user"/, '"role": "admin"')
-    : payloadJson.replace(/}\s*$/, ', "role": "admin"}');
+    : /^\s*\{\s*\}\s*$/.test(payloadJson)
+      ? '{"role": "admin"}'
+      : payloadJson.replace(/}\s*$/, ', "role": "admin"}');
   return `${d.headerRaw}.${b64urlEncode(tampered)}.${d.signature}`;
 }
