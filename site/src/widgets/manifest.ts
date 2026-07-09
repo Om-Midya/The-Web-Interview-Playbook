@@ -115,6 +115,11 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
       title: 'Rendering Patterns: CSR vs SSR vs SSG vs ISR',
       description: 'Step through all four strategies and watch WHERE the work happens — build, server, or browser — and who ever sees a stale page.',
     },
+    {
+      id: 'use-client-boundary',
+      title: "'use client' Boundary Visualizer",
+      description: "Drop a 'use client' directive on any component and watch the client bundle flood down the tree — with the shipped-JS bill updating live.",
+    },
   ],
   '07-system-design': [
     {

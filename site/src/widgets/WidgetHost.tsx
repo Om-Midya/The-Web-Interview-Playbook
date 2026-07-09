@@ -27,6 +27,7 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'websocket-pubsub': lazy(() => import('./pubsub/PubSubSim')),
   'rendering-pipeline': lazy(() => import('./pipeline/RenderingPipeline')),
   'jwt-decoder': lazy(() => import('./jwt/JwtDecoder')),
+  'use-client-boundary': lazy(() => import('./useclient/UseClientBoundary')),
 };
 
 export const REGISTERED_WIDGET_IDS = Object.keys(REGISTRY);
