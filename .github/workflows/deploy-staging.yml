@@ -1,0 +1,61 @@
+# Staging/demo deployment for this fork. Production is deployed by upstream
+# with its own strategy — this workflow must never be merged to main.
+#
+# Sync flow:   git checkout staging && git merge main && git push origin staging
+# One-time setup: repo Settings → Pages → Source: "GitHub Actions".
+name: Deploy staging to GitHub Pages
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # freshness badges read git log per file; shallow clones skip them
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: site/.node-version
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - name: Install
+        run: npm ci
+        working-directory: site
+      - name: Test
+        run: npm run test
+        working-directory: site
+      - name: Build (staging base path)
+        run: npm run build
+        working-directory: site
+        env:
+          ASTRO_BASE: /The-Web-Interview-Playbook
+          ASTRO_SITE: https://om-midya.github.io
+      - name: Check for base-path leaks
+        run: node scripts/check-base.mjs dist /The-Web-Interview-Playbook
+        working-directory: site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
