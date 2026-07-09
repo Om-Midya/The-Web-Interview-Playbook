@@ -20,7 +20,7 @@ describe('rehypePredict', () => {
   it('hides answer+why behind details, keeps the question code visible', async () => {
     const out = String(await makeTestPipeline(rehypePredict, TRICKY_PATH).process(DOC));
     expect((out.match(/predict-reveal"/g) ?? []).length).toBe(2);
-    expect(out).toContain('Think first');
+    expect(out).toContain('Predict first');
     // the code block must NOT be inside a details element
     const firstDetails = out.indexOf('<details');
     const firstCode = out.indexOf('typeof typeof');
@@ -31,6 +31,7 @@ describe('rehypePredict', () => {
       await makeTestPipeline(rehypePredict, '/repo/web-dev-interview-playbook/00-start-here/how-to-use-this-repo.md').process(DOC)
     );
     expect(out).not.toContain('predict-reveal');
+    expect(out).not.toContain('predict-commit');
   });
   it('matches qualified answers like "Answer (strict mode):"', async () => {
     const doc = [
@@ -45,5 +46,28 @@ describe('rehypePredict', () => {
     const answer = out.indexOf('Answer (non-strict)');
     expect(details).toBeGreaterThan(-1);
     expect(answer).toBeGreaterThan(details); // answer sits inside the details block
+  });
+  it('keys reveals positionally and pairs each commit bar with its details', async () => {
+    const out = String(await makeTestPipeline(rehypePredict, TRICKY_PATH).process(DOC));
+    expect(out).toContain('data-predict-key="02-javascript-core/tricky-output-questions:0"');
+    expect(out).toContain('data-predict-key="02-javascript-core/tricky-output-questions:1"');
+    expect(out).toContain('data-predict-for="02-javascript-core/tricky-output-questions:0"');
+    expect(out).toContain('data-predict-for="02-javascript-core/tricky-output-questions:1"');
+  });
+  it('the commit bar precedes its details element', async () => {
+    const out = String(await makeTestPipeline(rehypePredict, TRICKY_PATH).process(DOC));
+    const commit = out.indexOf('predict-commit');
+    const details = out.indexOf('<details');
+    expect(commit).toBeGreaterThan(-1);
+    expect(commit).toBeLessThan(details);
+  });
+  it('injects a hidden compare block as the first child of the reveal body', async () => {
+    const out = String(await makeTestPipeline(rehypePredict, TRICKY_PATH).process(DOC));
+    const body = out.indexOf('predict-reveal-body');
+    const compare = out.indexOf('predict-compare');
+    const answer = out.indexOf('Answer:');
+    expect(compare).toBeGreaterThan(body);
+    expect(compare).toBeLessThan(answer);
+    expect(out).toContain('predict-yours');
   });
 });
