@@ -78,6 +78,8 @@
 </style>
 
 <script>
+  import { withBase } from '../lib/base';
+
   const dialog = document.getElementById('search-dialog') as HTMLDialogElement;
   let loaded = false;
 
@@ -95,18 +97,19 @@
       // The path must be a variable: Vite's import analysis resolves literal
       // dynamic imports at transform time (even with @vite-ignore) and 500s
       // the dev server because the file doesn't exist until `pagefind` runs.
-      const pagefindUiUrl = '/pagefind/pagefind-ui.js';
+      const pagefindUiUrl = withBase('/pagefind/pagefind-ui.js');
       // @ts-ignore
       await import(/* @vite-ignore */ pagefindUiUrl);
-      if (!document.querySelector('link[href="/pagefind/pagefind-ui.css"]')) {
+      const pagefindCssUrl = withBase('/pagefind/pagefind-ui.css');
+      if (!document.querySelector(`link[href="${pagefindCssUrl}"]`)) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = '/pagefind/pagefind-ui.css';
+        link.href = pagefindCssUrl;
         document.head.appendChild(link);
       }
       container.innerHTML = '';
       // @ts-ignore
-      new PagefindUI({ element: '#pagefind-container', showSubResults: true, autofocus: true });
+      new PagefindUI({ element: '#pagefind-container', showSubResults: true, autofocus: true, baseUrl: import.meta.env.BASE_URL });
     } catch {
       /* dev mode: restore fallback hint text */
       loaded = false;

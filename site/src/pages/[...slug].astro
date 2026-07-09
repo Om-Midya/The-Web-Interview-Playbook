@@ -7,6 +7,7 @@ import TocNav from '../components/TocNav.astro';
 import Sidebar from '../components/Sidebar.astro';
 import { sectionOf, sectionTitle, extractTitle, sortDocs, isSectionReadme } from '../lib/content';
 import { getLastCommitISO } from '../lib/freshness';
+import { withBase } from '../lib/base';
 import '../styles/prose.css';
 
 export async function getStaticPaths() {
@@ -44,15 +45,15 @@ const navDocs = all.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d.
     <article class="prose">
       {section && (
         <p class="crumbs">
-          <a href={`/${section}/`}>{sectionTitle(section)}</a>
+          <a href={withBase(`/${section}/`)}>{sectionTitle(section)}</a>
           {' '}<FreshnessBadge iso={iso} uid={doc.id} />
         </p>
       )}
       {doc.data.status === 'updating' && <StatusBanner />}
       <Content />
       <nav class="pager">
-        {prev ? <a class="pager-link" href={`/${prev}/`}>← {titleFor(prev)}</a> : <span />}
-        {next ? <a class="pager-link next" href={`/${next}/`}>{titleFor(next)} →</a> : <span />}
+        {prev ? <a class="pager-link" href={withBase(`/${prev}/`)}>← {titleFor(prev)}</a> : <span />}
+        {next ? <a class="pager-link next" href={withBase(`/${next}/`)}>{titleFor(next)} →</a> : <span />}
       </nav>
     </article>
     <TocNav headings={headings} />

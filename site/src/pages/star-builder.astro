@@ -5,6 +5,7 @@ import Sidebar from '../components/Sidebar.astro';
 import StarBuilder from '../widgets/star/StarBuilder';
 import { parseBehavioralQuestions } from '../lib/prep';
 import { extractTitle } from '../lib/content';
+import { withBase } from '../lib/base';
 import '../styles/widgets.css';
 
 const docs = await getCollection('docs');
@@ -20,12 +21,12 @@ const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d
     <p class="lede">
       One story answers many questions. Draft against the 75-second clock, map your coverage,
       export your bank — everything stays in your browser.
-      Based on <a href="/09-hr-interviews/behavioral-questions/">the behavioral question bank</a>.
+      Based on <a href={withBase('/09-hr-interviews/behavioral-questions/')}>the behavioral question bank</a>.
     </p>
     {questions.length > 0 ? (
       <StarBuilder client:load questions={questions} />
     ) : (
-      <p>The question bank could not be parsed — read <a href="/09-hr-interviews/behavioral-questions/">the source document</a>.</p>
+      <p>The question bank could not be parsed — read <a href={withBase('/09-hr-interviews/behavioral-questions/')}>the source document</a>.</p>
     )}
   </div>
 </BaseLayout>

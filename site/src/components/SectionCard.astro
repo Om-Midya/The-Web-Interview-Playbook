@@ -1,9 +1,10 @@
 ---
+import { withBase } from '../lib/base';
 interface Props { dir: string; title: string; docCount: number; fresh: boolean; checkTotal?: number }
 const { dir, title, docCount, fresh, checkTotal = 0 } = Astro.props;
 const num = dir.slice(0, 2);
 ---
-<a class="card" href={`/${dir}/`}>
+<a class="card" href={withBase(`/${dir}/`)}>
   <span class="num">{num}</span>
   <span class="card-title">{title}</span>
   <span class="meta">

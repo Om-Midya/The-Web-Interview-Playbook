@@ -1,5 +1,6 @@
 ---
 import { sectionOf, sectionTitle, sortDocs, isSectionReadme, allSectionDirs } from '../lib/content';
+import { withBase } from '../lib/base';
 
 interface Props {
   docs: { id: string; title: string }[];
@@ -18,11 +19,11 @@ const byId = new Map(docs.map((d) => [d.id, d]));
       );
       return (
         <details open={s === currentSection}>
-          <summary><a href={`/${s}/`}>{sectionTitle(s)}</a></summary>
+          <summary><a href={withBase(`/${s}/`)}>{sectionTitle(s)}</a></summary>
           <ul>
             {ids.map((id) => (
               <li>
-                <a href={`/${id}/`} aria-current={id === currentId ? 'page' : undefined}>
+                <a href={withBase(`/${id}/`)} aria-current={id === currentId ? 'page' : undefined}>
                   {byId.get(id)?.title ?? id}
                 </a>
               </li>

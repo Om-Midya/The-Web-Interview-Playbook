@@ -1,6 +1,7 @@
 ---
 import SearchModal from '../components/SearchModal.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import { withBase } from '../lib/base';
 import '../styles/global.css';
 import '../styles/interactive.css';
 
@@ -34,7 +35,7 @@ const { title, description = 'Interactive web dev interview preparation', search
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="/">
+      <a class="brand" href={withBase('/')}>
         <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
           <circle cx="6.5" cy="17.5" r="3.4" />
           <path d="M15 15 l6 6 m0 -6 l-6 6" />

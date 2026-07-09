@@ -8,6 +8,10 @@ import { rehypePredict } from './src/lib/transforms/rehype-predict.ts';
 export default defineConfig({
   output: 'static',
 
+  // Deployment-target knobs; unset locally and on upstream → root-served build.
+  site: process.env.ASTRO_SITE,
+  base: process.env.ASTRO_BASE,
+
   markdown: {
     shikiConfig: {
       themes: { light: 'everforest-light', dark: 'everforest-dark' },

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { MockKit, RubricDimension } from '../../lib/prep';
+import { withBase } from '../../lib/base';
 import {
   loadAttempts, newAttemptId, radarPoints, saveAttempts, totalScore, verdictFor,
   type Attempt,
@@ -155,7 +156,7 @@ export default function MockSimulator({ kits, rubric }: { kits: MockKit[]; rubri
           </button>
           <button onClick={nextSection}>Next section →</button>
           <button onClick={finishRound}>Finish & score</button>
-          <a href={`/10-mock-interview-kits/${slug}/`} target="_blank" rel="noopener">
+          <a href={withBase(`/10-mock-interview-kits/${slug}/`)} target="_blank" rel="noopener">
             Open the script ↗
           </a>
         </div>

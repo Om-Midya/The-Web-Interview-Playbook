@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/base';
 ---
 <BaseLayout title="Out of bounds" description="404 — this route isn't on the board." searchable={false}>
   <div class="nf">
@@ -12,8 +13,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <h1 class="display nf-title">404 — busted play</h1>
     <p class="nf-copy">This route isn't on the board. It may have moved, or it never existed.</p>
     <div class="nf-actions">
-      <a class="nf-btn is-primary" href="/">Back to the board</a>
-      <a class="nf-btn" href="/roadmap/">See the game plan</a>
+      <a class="nf-btn is-primary" href={withBase('/')}>Back to the board</a>
+      <a class="nf-btn" href={withBase('/roadmap/')}>See the game plan</a>
     </div>
     <p class="nf-hint">Or press <kbd>⌘K</kbd> to search every play.</p>
   </div>

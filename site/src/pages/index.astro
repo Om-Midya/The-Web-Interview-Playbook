@@ -6,6 +6,7 @@ import ProgressRing from '../components/ProgressRing.astro';
 import { sectionOf, sectionTitle, extractTitle, isSectionReadme, allSectionDirs } from '../lib/content';
 import { getLastCommitISO, isRecent, formatDate } from '../lib/freshness';
 import { countCheckboxes } from '../lib/transforms/doc-id';
+import { withBase } from '../lib/base';
 
 const docs = await getCollection('docs');
 const sections = allSectionDirs(docs.map((d) => d.id));
@@ -43,7 +44,7 @@ const sectionMeta = sections.map((s) => {
           Visualized concepts, drills, and {docs.length}+ docs of questions, answers,
           and mock interviews — the plays interviewers expect you to know.
         </p>
-        <a class="cta" href="/roadmap/">Start the 4-week plan →</a>
+        <a class="cta" href={withBase('/roadmap/')}>Start the 4-week plan →</a>
         <div class="hero-progress">
           <ProgressRing prefix="" total={grandTotal} />
           <p class="hero-progress-note">Your training log — every checklist you tick, saved in your browser.</p>
@@ -83,7 +84,7 @@ const sectionMeta = sections.map((s) => {
       <ul class="feed">
         {recentFeed.map(({ d, iso }) => (
           <li>
-            <a href={`/${d.id}/`}>{extractTitle(d.body ?? '', d.id)}</a>
+            <a href={withBase(`/${d.id}/`)}>{extractTitle(d.body ?? '', d.id)}</a>
             <time datetime={iso!}>{formatDate(iso!)}</time>
           </li>
         ))}

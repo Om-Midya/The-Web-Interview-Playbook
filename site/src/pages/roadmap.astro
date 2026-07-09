@@ -6,6 +6,7 @@ import RoadmapPlanner from '../widgets/roadmap/RoadmapPlanner';
 import ProgressBackup from '../widgets/backup/ProgressBackup';
 import { parseRoadmap } from '../lib/roadmap';
 import { extractTitle } from '../lib/content';
+import { withBase } from '../lib/base';
 
 const docs = await getCollection('docs');
 const roadmapDoc = docs.find((d) => d.id === 'roadmap');
@@ -19,12 +20,12 @@ const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d
     <h1 class="display roadmap-title">Four weeks to ready</h1>
     <p class="lede">
       Check off each day as you go — progress is saved in your browser.
-      Based on <a href="/roadmap-source/">the full roadmap doc</a>.
+      Based on <a href={withBase('/roadmap-source/')}>the full roadmap doc</a>.
     </p>
     {weeks.length > 0 ? (
       <RoadmapPlanner client:load weeks={weeks} />
     ) : (
-      <p>The roadmap could not be parsed — read the <a href="/roadmap-source/">source document</a>.</p>
+      <p>The roadmap could not be parsed — read the <a href={withBase('/roadmap-source/')}>source document</a>.</p>
     )}
     <ProgressBackup client:visible />
   </div>

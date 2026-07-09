@@ -6,6 +6,7 @@ import StatusBanner from '../../components/StatusBanner.astro';
 import Sidebar from '../../components/Sidebar.astro';
 import { sectionOf, sectionTitle, extractTitle, sortDocs, isSectionReadme, allSectionDirs } from '../../lib/content';
 import { getLastCommitISO } from '../../lib/freshness';
+import { withBase } from '../../lib/base';
 import WidgetHost from '../../widgets/WidgetHost';
 import { SECTION_WIDGETS, SECTION_TOOLS } from '../../widgets/manifest';
 import '../../styles/prose.css';
@@ -53,7 +54,7 @@ const tools = SECTION_TOOLS[section] ?? [];
       <section aria-label="Interactive tools">
         <h2 class="docs-heading">Tools</h2>
         {tools.map((t) => (
-          <a class="tool-card" href={t.href}>
+          <a class="tool-card" href={withBase(t.href)}>
             <h3 class="widget-frame-title">{t.title}</h3>
             <p class="widget-frame-desc">{t.description}</p>
           </a>
@@ -67,7 +68,7 @@ const tools = SECTION_TOOLS[section] ?? [];
         const iso = e.filePath ? getLastCommitISO(e.filePath) : null;
         return (
           <li>
-            <a href={`/${id}/`}>{extractTitle(e.body ?? '', e.id)}</a>
+            <a href={withBase(`/${id}/`)}>{extractTitle(e.body ?? '', e.id)}</a>
             <FreshnessBadge iso={iso} uid={id} />
           </li>
         );

@@ -5,6 +5,7 @@ import Sidebar from '../components/Sidebar.astro';
 import MockSimulator from '../widgets/mock/MockSimulator';
 import { parseMockKit, parseRubric } from '../lib/prep';
 import { extractTitle } from '../lib/content';
+import { withBase } from '../lib/base';
 import '../styles/widgets.css';
 
 const docs = await getCollection('docs');
@@ -24,12 +25,12 @@ const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d
     <h1 class="display tool-title">Timed Mock Interview Simulator</h1>
     <p class="lede">
       Pick a round, run its real section clocks, then score yourself against
-      <a href="/10-mock-interview-kits/evaluation-rubric/">the rubric</a>. Attempts stay in your browser.
+      <a href={withBase('/10-mock-interview-kits/evaluation-rubric/')}>the rubric</a>. Attempts stay in your browser.
     </p>
     {kits.length > 0 && rubric.length > 0 ? (
       <MockSimulator client:load kits={kits} rubric={rubric} />
     ) : (
-      <p>The mock kits could not be parsed — start from <a href="/10-mock-interview-kits/">the kit docs</a>.</p>
+      <p>The mock kits could not be parsed — start from <a href={withBase('/10-mock-interview-kits/')}>the kit docs</a>.</p>
     )}
   </div>
 </BaseLayout>
