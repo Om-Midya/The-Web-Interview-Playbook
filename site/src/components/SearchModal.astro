@@ -108,8 +108,12 @@
         document.head.appendChild(link);
       }
       container.innerHTML = '';
+      // bundlePath must be explicit: PagefindUI's default comes from
+      // document.currentScript, which is null under dynamic import(), so it
+      // falls back to root "/pagefind/" — wrong on base-path deploys.
+      // baseUrl only rewrites result links, not asset fetches.
       // @ts-ignore
-      new PagefindUI({ element: '#pagefind-container', showSubResults: true, autofocus: true, baseUrl: import.meta.env.BASE_URL });
+      new PagefindUI({ element: '#pagefind-container', showSubResults: true, autofocus: true, baseUrl: import.meta.env.BASE_URL, bundlePath: withBase('/pagefind/') });
     } catch {
       /* dev mode: restore fallback hint text */
       loaded = false;
