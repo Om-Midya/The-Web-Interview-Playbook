@@ -4,6 +4,7 @@ import react from '@astrojs/react';
 import { rehypeChecklists } from './src/lib/transforms/rehype-checklists.ts';
 import { rehypeQaReveal } from './src/lib/transforms/rehype-qa-reveal.ts';
 import { rehypePredict } from './src/lib/transforms/rehype-predict.ts';
+import { rehypeMdLinks } from './src/lib/transforms/rehype-md-links.ts';
 
 export default defineConfig({
   output: 'static',
@@ -17,7 +18,7 @@ export default defineConfig({
       themes: { light: 'everforest-light', dark: 'everforest-dark' },
       defaultColor: false,
     },
-    rehypePlugins: [rehypeChecklists, rehypeQaReveal, rehypePredict],
+    rehypePlugins: [rehypeChecklists, rehypeQaReveal, rehypePredict, rehypeMdLinks],
   },
 
   integrations: [react()],
