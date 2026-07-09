@@ -1,5 +1,6 @@
 /* Widget frame + engine styles. Tokens only.
- * Widgets are "drills" on the board: marker-orange tab, chalk-thick border. */
+ * Widgets are "drills" on the board: marker-orange tab, chalk-thick border.
+ * v2 — responsive build */
 .widget-frame {
   border: 1.5px solid var(--border);
   border-top: 3px solid var(--accent-2);
