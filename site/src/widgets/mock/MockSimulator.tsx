@@ -152,7 +152,7 @@ export default function MockSimulator({ kits, rubric }: { kits: MockKit[]; rubri
         ))}
         <div className="sim-readout">
           <span>total <strong>{totalScore(scores)}</strong> / {rubric.length * 5}</span>
-          <span>{verdictFor(totalScore(scores), scored.length)}</span>
+          <span>{verdictFor(totalScore(scores), rubric.length)}</span>
         </div>
         <svg className="radar-svg" viewBox="0 0 200 200" role="img" aria-label="Score radar chart">
           <polygon className="radar-grid" points={gridOuter} />

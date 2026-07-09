@@ -27,6 +27,10 @@ describe('scoring', () => {
     expect(verdictFor(10, 10)).toContain('drilling');
     expect(verdictFor(0, 0)).toBe('');
   });
+  it('partial scoring cannot inflate the verdict when scaled by the full rubric', () => {
+    // one 5 out of a 5-dimension rubric averages 1.0, not 5.0
+    expect(verdictFor(5, 5)).toContain('drilling');
+  });
 });
 
 describe('radarPoints', () => {
