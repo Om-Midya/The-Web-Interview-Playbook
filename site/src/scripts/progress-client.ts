@@ -78,6 +78,7 @@ function bindPredicts() {
     if (existing) markCommitted(existing.text);
 
     details.querySelector('summary')?.addEventListener('click', (e) => {
+      // no paired commit bar (legacy/cached HTML): fail OPEN — never lock content behind a missing gate
       if (!commit || commit.classList.contains('is-committed')) return;
       e.preventDefault();
       pulse();

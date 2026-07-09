@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { MockKit, RubricDimension } from '../../lib/prep';
 import {
   loadAttempts, newAttemptId, radarPoints, saveAttempts, totalScore, verdictFor,
@@ -22,25 +22,41 @@ export default function MockSimulator({ kits, rubric }: { kits: MockKit[]; rubri
   const [flash, setFlash] = useState(false);
   const [scores, setScores] = useState<Record<number, number>>({});
   const [attempts, setAttempts] = useState<Attempt[]>(() => loadAttempts());
+  const endsAtRef = useRef(0);
 
   const kit = kits.find((k) => k.slug === slug) ?? null;
   const section = kit?.sections[sectionIdx] ?? null;
 
+  // Deadline-anchored countdown: browsers throttle background-tab timers (to
+  // ~1/min after 5min hidden), so a naive 1Hz decrement drifts far behind
+  // wall time. Instead we recompute remaining from a fixed end timestamp,
+  // which stays correct regardless of how late the tick fires.
   useEffect(() => {
     if (!running) return;
-    const t = setInterval(() => setRemaining((r) => r - 1), 1000);
-    return () => clearInterval(t);
+    const tick = () => setRemaining(Math.round((endsAtRef.current - Date.now()) / 1000));
+    const t = setInterval(tick, 1000);
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') tick();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      clearInterval(t);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
   }, [running]);
 
-  // Auto-advance when a section hits zero (last section keeps counting into
-  // negative — overrun). Flash reset lives in its own effect: this effect's
-  // deps change on advance, so a cleanup here would cancel the flash-off timer.
+  // Auto-advance when a section hits (or, after being hidden, passes) zero —
+  // last section keeps counting into negative — overrun). Flash reset lives
+  // in its own effect: this effect's deps change on advance, so a cleanup
+  // here would cancel the flash-off timer.
   useEffect(() => {
-    if (!running || remaining !== 0 || !kit) return;
+    if (!running || remaining > 0 || !kit) return;
     setFlash(true);
     if (sectionIdx < kit.sections.length - 1) {
       setSectionIdx(sectionIdx + 1);
-      setRemaining(kit.sections[sectionIdx + 1].minutes * 60);
+      const secs = kit.sections[sectionIdx + 1].minutes * 60;
+      endsAtRef.current = Date.now() + secs * 1000;
+      setRemaining(secs);
     }
   }, [remaining, running, kit, sectionIdx]);
 
@@ -53,9 +69,11 @@ export default function MockSimulator({ kits, rubric }: { kits: MockKit[]; rubri
   function startRound(s: string) {
     const k = kits.find((x) => x.slug === s);
     if (!k) return;
+    const secs = k.sections[0].minutes * 60;
     setSlug(s);
     setSectionIdx(0);
-    setRemaining(k.sections[0].minutes * 60);
+    endsAtRef.current = Date.now() + secs * 1000;
+    setRemaining(secs);
     setRunning(true);
     setMode('run');
   }
@@ -66,8 +84,18 @@ export default function MockSimulator({ kits, rubric }: { kits: MockKit[]; rubri
       finishRound();
       return;
     }
+    const secs = kit.sections[sectionIdx + 1].minutes * 60;
     setSectionIdx(sectionIdx + 1);
-    setRemaining(kit.sections[sectionIdx + 1].minutes * 60);
+    endsAtRef.current = Date.now() + secs * 1000;
+    setRemaining(secs);
+  }
+
+  function togglePause() {
+    if (!running) {
+      // resuming: re-anchor the deadline from the currently displayed remaining
+      endsAtRef.current = Date.now() + remaining * 1000;
+    }
+    setRunning((r) => !r);
   }
 
   function finishRound() {
@@ -115,7 +143,7 @@ export default function MockSimulator({ kits, rubric }: { kits: MockKit[]; rubri
         </div>
         <div className="mock-bar"><div className="mock-bar-fill" style={{ width: `${pct}%` }} /></div>
         <div className="sim-actions">
-          <button className="is-primary" onClick={() => setRunning((r) => !r)}>
+          <button className="is-primary" onClick={togglePause}>
             {running ? '⏸ Pause' : '▶ Resume'}
           </button>
           <button onClick={nextSection}>Next section →</button>
@@ -152,7 +180,7 @@ export default function MockSimulator({ kits, rubric }: { kits: MockKit[]; rubri
         ))}
         <div className="sim-readout">
           <span>total <strong>{totalScore(scores)}</strong> / {rubric.length * 5}</span>
-          <span>{verdictFor(totalScore(scores), rubric.length)}</span>
+          {scored.length > 0 && <span>{verdictFor(totalScore(scores), rubric.length)}</span>}
         </div>
         <svg className="radar-svg" viewBox="0 0 200 200" role="img" aria-label="Score radar chart">
           <polygon className="radar-grid" points={gridOuter} />

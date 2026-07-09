@@ -19,21 +19,34 @@ export default function StarBuilder({ questions }: { questions: BehavioralQuesti
   const [timerLeft, setTimerLeft] = useState(0);
   const [copied, setCopied] = useState(false);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const storiesRef = useRef(stories);
+  storiesRef.current = stories;
 
   const active = stories.find((s) => s.id === activeId) ?? stories[0];
   const cov = coverage(stories, questions);
 
-  // Debounced autosave; cleanup FLUSHES a pending save (user data must not drop)
+  // Debounced autosave; cleanup only clears the pending timer (no flush —
+  // this effect re-runs on every keystroke, so flushing here would defeat
+  // the debounce entirely). Real flush-on-exit is handled by the pagehide
+  // effect below, which covers both unmount and actual page navigation.
   useEffect(() => {
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => saveStories(stories), 400);
     return () => {
-      if (saveTimer.current) {
-        clearTimeout(saveTimer.current);
-        saveStories(stories);
-      }
+      if (saveTimer.current) clearTimeout(saveTimer.current);
     };
   }, [stories]);
+
+  // Flush on real page navigation (React cleanups don't run on unload) and
+  // on unmount (cleanup's final saveStories call covers that case).
+  useEffect(() => {
+    const flush = () => saveStories(storiesRef.current);
+    window.addEventListener('pagehide', flush);
+    return () => {
+      window.removeEventListener('pagehide', flush);
+      flush();
+    };
+  }, []);
 
   // Practice timer: steps through parts on their budgets
   useEffect(() => {
@@ -90,13 +103,17 @@ export default function StarBuilder({ questions }: { questions: BehavioralQuesti
   }
 
   function downloadExport() {
-    const blob = new Blob([exportStory(active, questions)], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${(active.title || 'star-story').replace(/\W+/g, '-').toLowerCase()}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+      const blob = new Blob([exportStory(active, questions)], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${(active.title.trim() || 'star-story').replace(/\W+/g, '-').toLowerCase()}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      // best-effort export; no-op on failure
+    }
   }
 
   const uncoveredTexts = questions.filter((q) => cov.uncovered.includes(q.n)).map((q) => q.text);
