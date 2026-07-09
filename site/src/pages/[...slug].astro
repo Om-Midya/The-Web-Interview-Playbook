@@ -38,10 +38,22 @@ const titleFor = (id: string) => {
 
 const { Content, headings } = await render(doc);
 const navDocs = all.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d.id) }));
+const tocItems = headings.filter((h) => h.depth === 2);
 ---
 <BaseLayout title={title} searchable={doc.id !== 'roadmap'}>
   <Sidebar slot="sidebar" docs={navDocs} currentId={doc.id} currentSection={section ?? undefined} />
   <div class="doc-shell">
+    {/* Inline collapsible TOC — shown on tablets and below */}
+    {tocItems.length > 2 && (
+      <details class="toc-inline">
+        <summary>On this page</summary>
+        <ul>
+          {tocItems.map((h) => (
+            <li><a href={`#${h.slug}`}>{h.text}</a></li>
+          ))}
+        </ul>
+      </details>
+    )}
     <article class="prose">
       {section && (
         <p class="crumbs">
@@ -73,4 +85,48 @@ const navDocs = all.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d.
   }
   .pager-link.next { text-align: right; margin-left: auto; }
   .pager-link:hover, .pager-link:focus-visible { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+  /* Inline collapsible TOC — visible only on tablets and below */
+  .toc-inline {
+    display: none;
+    font-size: 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    padding: 0.5rem 0.8rem;
+    margin-bottom: 0.5rem;
+    max-width: var(--content-width);
+    width: 100%;
+  }
+  .toc-inline summary {
+    cursor: pointer;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    padding: 0.15rem 0;
+    list-style: none;
+  }
+  .toc-inline summary::before { content: '▸ '; font-size: 0.7rem; }
+  .toc-inline[open] summary::before { content: '▾ '; }
+  .toc-inline ul { list-style: none; margin: 0.5rem 0 0; padding: 0; display: grid; gap: 0.2rem; }
+  .toc-inline li { margin: 0; }
+  .toc-inline a {
+    display: block; padding: 0.35rem 0.5rem; color: var(--text-muted);
+    border-radius: 6px; transition: color 0.12s ease;
+  }
+  .toc-inline a:hover, .toc-inline a:focus-visible {
+    color: var(--text); background: var(--surface); text-decoration: none;
+  }
+  @media (max-width: 1100px) {
+    .toc-inline { display: block; }
+  }
+
+  /* Responsive pagination links on narrow screens */
+  @media (max-width: 600px) {
+    .pager { flex-direction: column; gap: 0.5rem; }
+    .pager-link { max-width: 100%; }
+    .pager-link.next { text-align: left; margin-left: 0; }
+  }
 </style>

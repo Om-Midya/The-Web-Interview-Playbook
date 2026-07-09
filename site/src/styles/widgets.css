@@ -8,6 +8,9 @@
   padding: 1.25rem 1.4rem 1.4rem;
   margin: 1rem 0;
 }
+@media (max-width: 600px) {
+  .widget-frame { padding: 0.9rem 1rem 1.1rem; }
+}
 .widget-frame::before {
   content: 'Drill';
   display: inline-block;
@@ -131,6 +134,9 @@
   grid-template-columns: 1fr 1fr;
   gap: 0.6rem;
 }
+@media (max-width: 600px) {
+  .el-machine { grid-template-columns: 1fr; }
+}
 .el-zone {
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -204,6 +210,9 @@
   overflow: auto;
   padding: 0.6rem;
 }
+@media (max-width: 600px) {
+  .playground-preview { max-width: 100%; min-height: 160px; }
+}
 .playground-css {
   font-family: var(--font-mono);
   font-size: 0.78rem;
@@ -234,6 +243,10 @@
   gap: 2.2rem;
   padding: 1.2rem 0;
   flex-wrap: wrap;
+}
+@media (max-width: 600px) {
+  .pm-diagram { gap: 1rem; padding: 0.8rem 0; }
+  .pm-node { font-size: 0.78rem; padding: 0.4rem 0.9rem; }
 }
 .pm-node {
   border: 2px solid var(--border);
@@ -269,6 +282,9 @@
 /* ---- Plan 4 widgets ---- */
 .spec-grid { display: grid; gap: 0.8rem; }
 .spec-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.6rem; align-items: center; }
+@media (max-width: 500px) {
+  .spec-row { grid-template-columns: 1fr; }
+}
 .spec-input {
   font-family: var(--font-mono); font-size: 0.85rem; color: var(--text);
   background: var(--surface-2); border: 1px solid var(--border);
@@ -379,6 +395,9 @@
 /* ---- Tier-1 batch: keys / closure / coercion / grid ---- */
 /* Keys & reconciliation: roster rows; orange key badge = coach's marker */
 .kr-list { display: grid; gap: 0.45rem; max-width: 26rem; }
+@media (max-width: 500px) {
+  .kr-list { max-width: 100%; }
+}
 .kr-row {
   display: flex; align-items: center; gap: 0.7rem;
   border: 1px solid var(--border); border-radius: var(--radius);
@@ -613,6 +632,9 @@
   padding: 1rem 1.2rem; margin: 0.75rem 0; color: var(--text);
 }
 .tool-card:hover { border-color: var(--accent); text-decoration: none; }
+@media (max-width: 600px) {
+  .tool-card { padding: 0.8rem 1rem; }
+}
 .tool-card::before {
   content: 'Tool'; display: inline-block; font-family: var(--font-mono);
   font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
@@ -664,6 +686,10 @@
 .mock-bar-fill { height: 100%; background: var(--accent); }
 .mock-score-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.5rem; font-size: 0.85rem; }
 .mock-score-row .name { min-width: 14rem; }
+@media (max-width: 600px) {
+  .mock-score-row .name { min-width: auto; }
+  .mock-score-row { flex-direction: column; align-items: flex-start; }
+}
 .radar-svg { max-width: 320px; }
 .radar-grid { stroke: var(--border); fill: none; }
 .radar-poly { fill: color-mix(in srgb, var(--accent) 25%, transparent); stroke: var(--accent); stroke-width: 1.5; }
