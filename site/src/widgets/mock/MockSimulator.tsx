@@ -23,6 +23,7 @@ export default function MockSimulator({ kits, rubric }: { kits: MockKit[]; rubri
   const [scores, setScores] = useState<Record<number, number>>({});
   const [attempts, setAttempts] = useState<Attempt[]>(() => loadAttempts());
   const endsAtRef = useRef(0);
+  const flashedRef = useRef(false);
 
   const kit = kits.find((k) => k.slug === slug) ?? null;
   const section = kit?.sections[sectionIdx] ?? null;
@@ -51,12 +52,16 @@ export default function MockSimulator({ kits, rubric }: { kits: MockKit[]; rubri
   // here would cancel the flash-off timer.
   useEffect(() => {
     if (!running || remaining > 0 || !kit) return;
-    setFlash(true);
+    if (!flashedRef.current) {
+      flashedRef.current = true;
+      setFlash(true);
+    }
     if (sectionIdx < kit.sections.length - 1) {
       setSectionIdx(sectionIdx + 1);
       const secs = kit.sections[sectionIdx + 1].minutes * 60;
       endsAtRef.current = Date.now() + secs * 1000;
       setRemaining(secs);
+      flashedRef.current = false;
     }
   }, [remaining, running, kit, sectionIdx]);
 
@@ -76,6 +81,7 @@ export default function MockSimulator({ kits, rubric }: { kits: MockKit[]; rubri
     setRemaining(secs);
     setRunning(true);
     setMode('run');
+    flashedRef.current = false;
   }
 
   function nextSection() {
@@ -88,6 +94,7 @@ export default function MockSimulator({ kits, rubric }: { kits: MockKit[]; rubri
     setSectionIdx(sectionIdx + 1);
     endsAtRef.current = Date.now() + secs * 1000;
     setRemaining(secs);
+    flashedRef.current = false;
   }
 
   function togglePause() {
