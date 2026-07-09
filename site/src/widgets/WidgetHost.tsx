@@ -21,10 +21,10 @@ const REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
   'keys-reconciliation': lazy(() => import('./keys/KeysReconciliation')),
   'debounce-throttle': lazy(() => import('./debounce/DebounceTimeline')),
   'nplusone-query': lazy(() => import('./nplusone/NPlusOneVisualizer')),
-  'load-balancer': lazy(() => import('./loadbalancer/LoadBalancer')),
+  'load-balancer': lazy(() => import('./loadbalancer/LoadBalancerSim')),
   'cache-flow': lazy(() => import('./cache/CacheFlow')),
   'double-booking-race': lazy(() => import('./race/DoubleBookingRace')),
-  'websocket-pubsub': lazy(() => import('./pubsub/PubSub')),
+  'websocket-pubsub': lazy(() => import('./pubsub/PubSubSim')),
   'rendering-pipeline': lazy(() => import('./pipeline/RenderingPipeline')),
   'jwt-decoder': lazy(() => import('./jwt/JwtDecoder')),
 };

@@ -31,4 +31,23 @@ describe('widget manifest ↔ registry', () => {
       expect(dirs.has(key), `manifest key "${key}" is not a corpus section dir`).toBe(true);
     }
   });
+  it('no widget source files differ only in casing (breaks resolution on case-insensitive filesystems)', () => {
+    const widgetsDir = dirname(fileURLToPath(import.meta.url));
+    const walk = (dir: string): void => {
+      const stems = new Map<string, string>();
+      for (const e of readdirSync(dir, { withFileTypes: true })) {
+        if (e.isDirectory()) {
+          walk(join(dir, e.name));
+          continue;
+        }
+        const m = e.name.match(/^(.+?)\.(ts|tsx)$/);
+        if (!m || e.name.includes('.test.')) continue;
+        const stem = m[1].toLowerCase();
+        const prev = stems.get(stem);
+        expect(prev, `${dir}: "${e.name}" collides with "${prev}" (names differ only in casing)`).toBeUndefined();
+        stems.set(stem, e.name);
+      }
+    };
+    walk(widgetsDir);
+  });
 });
