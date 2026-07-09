@@ -61,7 +61,7 @@ export function readFromB(s: CapState, p: CapParams): CapState {
       log: [...s.log, 'B: read REJECTED — cannot confirm it is current (chose Consistency over Availability)'],
     };
   }
-  const stale = p.partitioned && s.valueB !== s.valueA;
+  const stale = s.valueB !== s.valueA;
   const tag = stale ? ` (STALE — A has ${UNIT[p.scenario]}${s.valueA})` : ' ✓';
   return { ...s, log: [...s.log, `B: read → ${UNIT[p.scenario]}${s.valueB}${tag}`] };
 }
@@ -71,6 +71,15 @@ export const CAP_SPEC: SimSpec<CapState, CapParams> = {
   tick(state, p) {
     const now = state.now + TICK_MS;
     let s: CapState = { ...state, now, inFlight: [...state.inFlight], queued: [...state.queued] };
+    // a cut wire stalls anything already in flight
+    if (p.partitioned && s.inFlight.length > 0) {
+      s = {
+        ...s,
+        queued: [...s.queued, ...s.inFlight],
+        inFlight: [],
+        log: [...s.log, 'partition cut — replication stalled'],
+      };
+    }
     // heal: queued replications go on the wire
     if (!p.partitioned && s.queued.length > 0) {
       const drained = s.queued.map((r) => ({ ...r, sentAt: now }));

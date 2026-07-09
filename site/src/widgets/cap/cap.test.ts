@@ -59,6 +59,18 @@ describe('partition', () => {
     expect(s.queued).toHaveLength(0);
     expect(s.log.some((l) => l.includes('healed'))).toBe(true);
   });
+  it('a replication already in flight stalls when the partition cuts mid-flight', () => {
+    const pHealthy = P();
+    const pPart = P({ partitioned: true });
+    let s = runScript(CAP_SPEC, pHealthy, 10, [{ atTick: 0, apply: (st) => writeToA(st, pHealthy) }]);
+    expect(s.inFlight).toHaveLength(1);
+    for (let i = 0; i < 40; i++) s = CAP_SPEC.tick(s, pPart);
+    expect(s.valueB).toBe(0);           // never crossed the cut wire
+    expect(s.queued).toHaveLength(1);   // stalled, not lost
+    const pHealed = P();
+    for (let i = 0; i < 40; i++) s = CAP_SPEC.tick(s, pHealed);
+    expect(s.valueB).toBe(100);         // heal replays it
+  });
 });
 
 describe('snapshots', () => {
