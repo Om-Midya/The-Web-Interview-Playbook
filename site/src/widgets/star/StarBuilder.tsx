@@ -23,12 +23,15 @@ export default function StarBuilder({ questions }: { questions: BehavioralQuesti
   const active = stories.find((s) => s.id === activeId) ?? stories[0];
   const cov = coverage(stories, questions);
 
-  // Debounced autosave
+  // Debounced autosave; cleanup FLUSHES a pending save (user data must not drop)
   useEffect(() => {
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => saveStories(stories), 400);
     return () => {
-      if (saveTimer.current) clearTimeout(saveTimer.current);
+      if (saveTimer.current) {
+        clearTimeout(saveTimer.current);
+        saveStories(stories);
+      }
     };
   }, [stories]);
 
