@@ -18,7 +18,7 @@ const { title, description = 'Interactive web dev interview preparation', search
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content={description} />
     <title>{title} · Web Interview Playbook</title>
     <script is:inline>
@@ -45,14 +45,55 @@ const { title, description = 'Interactive web dev interview preparation', search
       </a>
       <div class="header-actions">
         <slot name="header-actions" />
+        <button id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+            <path class="nav-line-top" d="M4 7 L20 7" />
+            <path class="nav-line-mid" d="M4 12 L20 12" />
+            <path class="nav-line-bot" d="M4 17 L20 17" />
+          </svg>
+        </button>
         <SearchModal />
         <ThemeToggle />
       </div>
     </header>
+    <div id="nav-backdrop" aria-hidden="true"></div>
     <div class="shell">
       <slot name="sidebar" />
       <main id="main-content" data-pagefind-body={searchable ? true : undefined}><slot /></main>
     </div>
+    <script>
+      const toggle = document.getElementById('nav-toggle');
+      const backdrop = document.getElementById('nav-backdrop');
+      const html = document.documentElement;
+
+      function openNav() {
+        html.dataset.navOpen = 'true';
+        toggle.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeNav() {
+        delete html.dataset.navOpen;
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+
+      toggle?.addEventListener('click', () => {
+        html.dataset.navOpen === 'true' ? closeNav() : openNav();
+      });
+
+      backdrop?.addEventListener('click', closeNav);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && html.dataset.navOpen === 'true') closeNav();
+      });
+
+      // Close nav when a nav link is clicked (delegated)
+      document.querySelector('.shell')?.addEventListener('click', (e) => {
+        const link = e.target.closest('aside.sidebar a');
+        if (link && html.dataset.navOpen === 'true') closeNav();
+      });
+    </script>
     <style>
       .skip-link {
         position: absolute;
@@ -87,6 +128,7 @@ const { title, description = 'Interactive web dev interview preparation', search
         gap: 0.55rem;
         color: var(--text);
         transition: opacity 0.15s ease;
+        min-width: 0;
       }
       .brand:hover {
         text-decoration: none;
@@ -94,7 +136,12 @@ const { title, description = 'Interactive web dev interview preparation', search
       }
       .brand-mark { width: 1.5rem; height: 1.5rem; color: var(--accent); flex-shrink: 0; }
       .brand-mark path[stroke-dasharray] { stroke: var(--accent-2); }
-      .brand-text { font-size: 0.95rem; }
+      .brand-text {
+        font-size: 0.95rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       .brand strong {
         font-family: var(--font-display);
         font-weight: 400;
@@ -104,6 +151,49 @@ const { title, description = 'Interactive web dev interview preparation', search
         color: var(--accent);
       }
       .header-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+      /* Hamburger nav toggle — visible only on screens where sidebar is hidden */
+      #nav-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--text);
+        cursor: pointer;
+        padding: 0.35rem;
+        border-radius: var(--radius);
+      }
+      #nav-toggle:hover { background: var(--surface-2); }
+      #nav-toggle:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+      .nav-icon { width: 1.35rem; height: 1.35rem; display: block; }
+      .nav-line-top, .nav-line-mid, .nav-line-bot { transform-origin: 12px 12px; transition: transform 0.2s ease, opacity 0.15s ease; }
+      html[data-nav-open='true'] .nav-line-top { transform: translateY(5px) rotate(45deg); }
+      html[data-nav-open='true'] .nav-line-mid { opacity: 0; }
+      html[data-nav-open='true'] .nav-line-bot { transform: translateY(-5px) rotate(-45deg); }
+
+      @media (max-width: 900px) {
+        #nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
+      }
+
+      /* Backdrop overlay for mobile nav */
+      #nav-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgb(0 0 0 / 0.45);
+        z-index: 15;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+      }
+      html[data-nav-open='true'] #nav-backdrop {
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+      }
+      @media (max-width: 900px) {
+        html[data-nav-open='true'] #nav-backdrop { display: block; }
+      }
+
       .shell {
         display: flex;
         min-height: calc(100vh - 3.2rem);
@@ -112,6 +202,9 @@ const { title, description = 'Interactive web dev interview preparation', search
         flex: 1;
         min-width: 0;
         padding: 2rem 1.5rem 4rem;
+      }
+      @media (max-width: 600px) {
+        main { padding: 1.25rem 1rem 3rem; }
       }
     </style>
     <script src="../scripts/progress-client.ts"></script>
