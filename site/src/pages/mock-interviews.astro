@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import MockSimulator from '../widgets/mock/MockSimulator';
+import { parseMockKit, parseRubric } from '../lib/prep';
+import { extractTitle } from '../lib/content';
+import '../styles/widgets.css';
+
+const docs = await getCollection('docs');
+const kitDocs = docs.filter((d) => d.id.startsWith('10-mock-interview-kits/') && d.id.endsWith('-round'));
+const kits = kitDocs
+  .map((d) => parseMockKit(d.id.split('/')[1], d.body ?? ''))
+  .filter((k): k is NonNullable<typeof k> => k !== null)
+  .sort((a, b) => a.slug.localeCompare(b.slug));
+const rubricDoc = docs.find((d) => d.id === '10-mock-interview-kits/evaluation-rubric');
+const rubric = rubricDoc ? parseRubric(rubricDoc.body ?? '') : [];
+const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d.id) }));
+---
+<BaseLayout title="Timed Mock Interview Simulator" description="Run the mock rounds against their real clocks and score yourself on the rubric.">
+  <Sidebar slot="sidebar" docs={navDocs} />
+  <div class="tool-page">
+    <p class="eyebrow">Mock rounds</p>
+    <h1 class="display tool-title">Timed Mock Interview Simulator</h1>
+    <p class="lede">
+      Pick a round, run its real section clocks, then score yourself against
+      <a href="/10-mock-interview-kits/evaluation-rubric/">the rubric</a>. Attempts stay in your browser.
+    </p>
+    {kits.length > 0 && rubric.length > 0 ? (
+      <MockSimulator client:load kits={kits} rubric={rubric} />
+    ) : (
+      <p>The mock kits could not be parsed — start from <a href="/10-mock-interview-kits/">the kit docs</a>.</p>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .tool-page { max-width: 62rem; margin: 0 auto; }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-2);
+    margin: 0 0 0.5rem;
+  }
+  .tool-title { font-size: clamp(1.7rem, 3.4vw, 2.4rem); margin-bottom: 0.75rem; }
+  .lede { color: var(--text-muted); max-width: 62ch; }
+</style>

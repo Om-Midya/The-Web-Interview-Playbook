@@ -83,7 +83,7 @@
   margin-top: 0.9rem;
   flex-wrap: wrap;
 }
-.stepper-controls button, .pm-actions button, .kr-actions button, .sim-actions button {
+.stepper-controls button, .pm-actions button, .kr-actions button, .sim-actions button, .mock-score-row button {
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -92,9 +92,9 @@
   padding: 0.35rem 0.8rem;
   cursor: pointer;
 }
-.stepper-controls button:hover:not(:disabled), .pm-actions button:hover:not(:disabled), .kr-actions button:hover:not(:disabled), .sim-actions button:hover:not(:disabled) { border-color: var(--accent); }
-.stepper-controls button:disabled, .pm-actions button:disabled, .kr-actions button:disabled, .sim-actions button:disabled { opacity: 0.45; cursor: default; }
-.stepper-controls button.is-primary, .pm-actions button.is-primary, .kr-actions button.is-primary, .sim-actions button.is-primary {
+.stepper-controls button:hover:not(:disabled), .pm-actions button:hover:not(:disabled), .kr-actions button:hover:not(:disabled), .sim-actions button:hover:not(:disabled), .mock-score-row button:hover:not(:disabled) { border-color: var(--accent); }
+.stepper-controls button:disabled, .pm-actions button:disabled, .kr-actions button:disabled, .sim-actions button:disabled, .mock-score-row button:disabled { opacity: 0.45; cursor: default; }
+.stepper-controls button.is-primary, .pm-actions button.is-primary, .kr-actions button.is-primary, .sim-actions button.is-primary, .mock-score-row button.is-primary {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-contrast);
