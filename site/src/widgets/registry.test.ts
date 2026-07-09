@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SECTION_WIDGETS } from './manifest';
+import { SECTION_WIDGETS, SECTION_TOOLS } from './manifest';
 import { REGISTERED_WIDGET_IDS } from './WidgetHost';
 
 describe('widget manifest ↔ registry', () => {
@@ -49,5 +49,17 @@ describe('widget manifest ↔ registry', () => {
       }
     };
     walk(widgetsDir);
+  });
+  it('every SECTION_TOOLS key is a real corpus section directory', () => {
+    const here = dirname(fileURLToPath(import.meta.url));
+    const corpus = join(here, '..', '..', '..', 'web-dev-interview-playbook');
+    const dirs = new Set(
+      readdirSync(corpus, { withFileTypes: true })
+        .filter((d) => d.isDirectory())
+        .map((d) => d.name),
+    );
+    for (const key of Object.keys(SECTION_TOOLS)) {
+      expect(dirs.has(key), `SECTION_TOOLS key "${key}" is not a corpus section dir`).toBe(true);
+    }
   });
 });

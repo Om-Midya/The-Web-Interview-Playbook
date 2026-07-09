@@ -156,3 +156,27 @@ export const SECTION_WIDGETS: Record<string, WidgetMeta[]> = {
     },
   ],
 };
+
+/** Page-level prep tools, surfaced as cards on their section pages. */
+export interface ToolLink {
+  href: string;
+  title: string;
+  description: string;
+}
+
+export const SECTION_TOOLS: Record<string, ToolLink[]> = {
+  '09-hr-interviews': [
+    {
+      href: '/star-builder/',
+      title: 'STAR Answer Builder',
+      description: 'Draft your stories against the real 10/10/40/15-second budgets, map them to every behavioral question, and rehearse on a 75-second timer.',
+    },
+  ],
+  '10-mock-interview-kits': [
+    {
+      href: '/mock-interviews/',
+      title: 'Timed Mock Interview Simulator',
+      description: 'Run any mock round against its real section clocks, then score yourself on the rubric and watch your radar grow between attempts.',
+    },
+  ],
+};

@@ -7,7 +7,7 @@ import Sidebar from '../../components/Sidebar.astro';
 import { sectionOf, sectionTitle, extractTitle, sortDocs, isSectionReadme, allSectionDirs } from '../../lib/content';
 import { getLastCommitISO } from '../../lib/freshness';
 import WidgetHost from '../../widgets/WidgetHost';
-import { SECTION_WIDGETS } from '../../widgets/manifest';
+import { SECTION_WIDGETS, SECTION_TOOLS } from '../../widgets/manifest';
 import '../../styles/prose.css';
 import '../../styles/widgets.css';
 
@@ -28,6 +28,7 @@ const entryFor = (id: string) => docs.find((d) => d.id === id)!;
 const rendered = readme ? await render(readme) : null;
 const navDocs = docs.map((d) => ({ id: d.id, title: extractTitle(d.body ?? '', d.id) }));
 const widgets = SECTION_WIDGETS[section] ?? [];
+const tools = SECTION_TOOLS[section] ?? [];
 ---
 <BaseLayout title={sectionTitle(section)}>
   <Sidebar slot="sidebar" docs={navDocs} currentSection={section} />
@@ -45,6 +46,17 @@ const widgets = SECTION_WIDGETS[section] ?? [];
             <p class="widget-frame-desc">{w.description}</p>
             <WidgetHost client:visible widgetId={w.id} />
           </div>
+        ))}
+      </section>
+    )}
+    {tools.length > 0 && (
+      <section aria-label="Interactive tools">
+        <h2 class="docs-heading">Tools</h2>
+        {tools.map((t) => (
+          <a class="tool-card" href={t.href}>
+            <h3 class="widget-frame-title">{t.title}</h3>
+            <p class="widget-frame-desc">{t.description}</p>
+          </a>
         ))}
       </section>
     )}
